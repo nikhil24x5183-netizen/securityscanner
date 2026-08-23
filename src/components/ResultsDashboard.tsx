@@ -13,6 +13,7 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
   const [txSender, setTxSender] = useState<string | null>(null);
   const [paymentMode, setPaymentMode] = useState<'qr' | 'wallet'>('qr');
   const [showDeductConfirmModal, setShowDeductConfirmModal] = useState<boolean>(false);
+  const [showSuccessGPayModal, setShowSuccessGPayModal] = useState<boolean>(false);
   const [initialTxId, setInitialTxId] = useState<string | null>(null);
 
   // Capture initial latest TX ID on mount
@@ -88,6 +89,7 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
       setPaidTxId(mockTx);
       setPaymentLoading(false);
       setIsLocked(false);
+      setShowSuccessGPayModal(true);
     }, 1200);
   };
 
@@ -496,6 +498,63 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
             })}
           </div>
         </>
+      )}
+      {/* GPay / Web3 Animated Payment Success Modal */}
+      {showSuccessGPayModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4 animate-fade-in">
+          <div className="w-full max-w-md p-8 rounded-3xl bg-[#09090b] border-2 border-emerald-500/80 shadow-[0_0_60px_rgba(16,185,129,0.3)] text-white text-center space-y-6">
+            {/* Animated GPay Circle Tick */}
+            <div className="relative w-24 h-24 mx-auto flex items-center justify-center">
+              <div className="absolute inset-0 rounded-full bg-emerald-500/20 animate-ping"></div>
+              <div className="absolute inset-2 rounded-full bg-emerald-500/30 animate-pulse"></div>
+              <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-emerald-600 via-teal-400 to-cyan-400 border-4 border-white flex items-center justify-center shadow-2xl z-10 transform transition-transform animate-bounce">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <span className="text-xs font-black uppercase tracking-widest text-emerald-400 bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-500/40">
+                ✓ ALGORAND x402 CONFIRMED
+              </span>
+              <h3 className="text-2xl font-black uppercase tracking-tight text-white pt-2">
+                Payment Successful!
+              </h3>
+              <p className="text-xs text-emerald-200 font-mono">
+                0.5 ALGO Micro-Transaction Verified On-Chain
+              </p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-black/70 border border-emerald-500/30 text-left space-y-2 text-xs font-mono">
+              <div className="flex justify-between text-emerald-300">
+                <span>Status:</span>
+                <span className="font-bold text-[#00FF9D]">CONFIRMED ON LEDGER</span>
+              </div>
+              <div className="flex justify-between text-zinc-400">
+                <span>Network:</span>
+                <span className="text-white">Algorand Testnet</span>
+              </div>
+              <div className="flex justify-between text-zinc-400">
+                <span>Amount Paid:</span>
+                <span className="text-white font-bold">0.5 ALGO</span>
+              </div>
+              <div className="border-t border-white/10 pt-2 text-[10px] text-zinc-400 truncate">
+                TxHash: <span className="text-emerald-300 font-mono">{paidTxId}</span>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setShowSuccessGPayModal(false)}
+              className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-black text-xs uppercase tracking-widest transition-all cursor-pointer shadow-xl shadow-emerald-500/30 active:scale-95 flex items-center justify-center gap-2"
+            >
+              <span>🚀 VIEW UNLOCKED SECURITY REPORT</span>
+              <svg width="14" height="14" viewBox="0 0 12 12" fill="none">
+                <path d="M1 11L11 1M11 1H4M11 1V8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
