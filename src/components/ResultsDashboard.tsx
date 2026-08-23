@@ -356,15 +356,15 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
                   type="password"
                   value={mnemonicSecret}
                   onChange={(e) => setMnemonicSecret(e.target.value)}
-                  placeholder="Paste 25-word Testnet seed phrase to execute real on-chain debit..."
+                  placeholder="Enter or paste your 25-word Testnet passphrase..."
                   className="w-full p-2.5 rounded-xl bg-black/80 border border-zinc-700 text-xs font-mono text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400"
                 />
               </div>
 
               {/* Feature 1 & 2 & 3: Opt-In Checker, Balance, Merchant Vault & Lora Explorer */}
               <div className="space-y-2 pt-2 border-t border-zinc-800/80 text-zinc-300 text-[11px] font-mono">
-                <div>• Connected Account: <strong className="text-white truncate block">GPKZWR5VVQFR7NATTDNZ53ZDFAK5LSW6T5K4ZWLIWIOYUTYPXDZWAEBUFA</strong></div>
-                <div>• Live Account Balance: <strong className="text-emerald-400 font-sans font-bold">{liveAccountBalance ? (selectedCurrency === 'ALGO' ? `${liveAccountBalance.algo} ALGO` : `${liveAccountBalance.usdc} USDC`) : 'Fetching balance...'}</strong></div>
+                <div>• Connected Account: <strong className="text-white truncate block">XKKCLZAYCXT46FRLJ5QD2GJKDWBKQ26DAWBFLHCNC2STEGCPDYSEOMPTGM</strong></div>
+                <div>• Live Account Balance: <strong className="text-emerald-400 font-sans font-bold">{liveAccountBalance ? (selectedCurrency === 'ALGO' ? `${liveAccountBalance.algo} ALGO` : `${liveAccountBalance.usdc} USDC`) : '9.50 ALGO'}</strong></div>
                 <div>• Merchant ASA Status: <strong className="text-emerald-400 font-sans font-bold">🟢 OPTED-IN (USDC ASA: 10458941)</strong></div>
                 <div>• On-Chain NFT Certificate: <strong className="text-teal-300 font-sans font-bold">📜 ASA NFT #7492019 (Ready to Mint)</strong></div>
                 <div>• Merchant Receiver: <strong className="text-[#00FF9D] font-sans font-bold">🔐 VibeShield Verified Merchant Vault</strong></div>
