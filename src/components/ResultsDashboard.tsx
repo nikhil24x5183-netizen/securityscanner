@@ -87,20 +87,6 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
 
     // Show Pera App Launch Modal
     setShowPeraLaunchModal(true);
-
-    const peraDeepLink = `algorand://${ALGORAND_RECIPIENT}?amount=500000`;
-    try {
-      if (typeof window !== 'undefined') {
-        const link = document.createElement('a');
-        link.href = peraDeepLink;
-        link.target = '_blank';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-    } catch (e) {
-      console.log("Deep link redirect initiated");
-    }
     
     try {
       const liveTxData = await checkLatestAlgorandTransactionDetails();
@@ -660,22 +646,13 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
 
             <div className="space-y-2">
               <a
-                href={`algorand://${ALGORAND_RECIPIENT}?amount=500000`}
+                href="https://web.perawallet.app/"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setShowPeraLaunchModal(false)}
                 className="w-full py-3.5 rounded-2xl bg-[#5E0ED7] hover:bg-[#6e14fa] text-white font-black text-xs uppercase tracking-widest transition-all cursor-pointer shadow-xl active:scale-95 flex items-center justify-center gap-2"
               >
-                <span>📱 OPEN PERA MOBILE APP</span>
-              </a>
-
-              <a
-                href="https://web.perawallet.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-3 rounded-2xl bg-purple-950/80 hover:bg-purple-900/90 border border-purple-500/50 text-purple-200 font-bold text-xs uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2"
-              >
-                <span>💻 OPEN PERA WEB WALLET (DESKTOP PC)</span>
+                <span>💻 OPEN PERA WEB WALLET (DESKTOP & MOBILE)</span>
               </a>
 
               <button
