@@ -666,13 +666,11 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
               >
                 <span>📱 TAP TO OPEN PERA WALLET APP</span>
               </a>
-              <button
-                onClick={() => setShowPeraLaunchModal(false)}
-                className="w-full py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-400 font-bold text-xs uppercase tracking-wider transition-all cursor-pointer"
-              >
-                Close Window
-              </button>
             </div>
           </div>
         </div>
+      )}
+    </div>
+  );
+}
       )}
