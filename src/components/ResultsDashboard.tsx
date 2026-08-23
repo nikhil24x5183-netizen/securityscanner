@@ -334,15 +334,23 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
             </button>
           )}
 
-          {/* Action Button for Connected Wallet Mode */}
+          {/* Action Buttons for Connected Wallet Mode */}
           {paymentMode === 'wallet' && (
-            <div className="flex justify-center max-w-lg mx-auto">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-lg mx-auto">
               <button
                 onClick={() => setShowDeductConfirmModal(true)}
                 disabled={paymentLoading}
-                className="w-full px-8 py-4 rounded-full bg-[#5E0ED7] hover:bg-[#6e14fa] text-white font-extrabold text-xs uppercase tracking-widest transition-all shadow-xl shadow-purple-500/20 cursor-pointer active:scale-95"
+                className="flex-1 px-6 py-4 rounded-full bg-[#5E0ED7] hover:bg-[#6e14fa] text-white font-extrabold text-xs uppercase tracking-widest transition-all shadow-xl shadow-purple-500/20 cursor-pointer active:scale-95"
               >
-                {paymentLoading ? '⏳ Processing Payment...' : `⚡ PAY ${selectedCurrency === 'ALGO' ? '0.5 ALGO' : '0.10 USDC'} WITH CONNECTED WALLET`}
+                {paymentLoading ? '⏳ Processing Payment...' : `⚡ PAY ${selectedCurrency === 'ALGO' ? '0.5 ALGO' : '0.10 USDC'}`}
+              </button>
+
+              <button
+                onClick={handleAgentAutoPay}
+                disabled={paymentLoading}
+                className="flex-1 px-6 py-4 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs uppercase tracking-widest transition-all shadow-xl shadow-emerald-500/20 cursor-pointer active:scale-95"
+              >
+                🤖 1-CLICK AI AGENT AUTO-PAY
               </button>
             </div>
           )}
