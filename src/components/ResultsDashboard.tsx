@@ -17,6 +17,7 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
   const [liveAccountBalance, setLiveAccountBalance] = useState<{ algo: number; usdc: number } | null>(null);
   const [showDeductConfirmModal, setShowDeductConfirmModal] = useState<boolean>(false);
   const [showSuccessGPayModal, setShowSuccessGPayModal] = useState<boolean>(false);
+  const [showPeraLaunchModal, setShowPeraLaunchModal] = useState<boolean>(false);
   const [initialTxId, setInitialTxId] = useState<string | null>(null);
 
   // Capture initial baseline and live account balance
@@ -84,11 +85,18 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
     setPaymentLoading(true);
     setPaymentError(null);
 
-    // Trigger Pera Wallet deep-link protocol URI to open Pera Wallet app for signature
+    // Show Pera App Launch Modal
+    setShowPeraLaunchModal(true);
+
     const peraDeepLink = `algorand://${ALGORAND_RECIPIENT}?amount=500000`;
     try {
       if (typeof window !== 'undefined') {
-        window.location.href = peraDeepLink;
+        const link = document.createElement('a');
+        link.href = peraDeepLink;
+        link.target = '_blank';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
       }
     } catch (e) {
       console.log("Deep link redirect initiated");
@@ -621,7 +629,50 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
             </button>
           </div>
         </div>
+      {/* Pera Wallet Mobile App Launcher Modal */}
+      {showPeraLaunchModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 animate-fade-in">
+          <div className="w-full max-w-md p-6 sm:p-8 rounded-3xl bg-[#09090b] border-2 border-purple-500 shadow-2xl text-white text-center space-y-6">
+            <div className="w-16 h-16 rounded-full bg-purple-950/80 border-2 border-purple-400 text-3xl flex items-center justify-center mx-auto shadow-xl animate-bounce">
+              📱
+            </div>
+            <div className="space-y-1">
+              <h3 className="text-xl font-black uppercase tracking-tight text-white">
+                Opening Pera Algo Wallet
+              </h3>
+              <p className="text-xs text-purple-300 font-mono">
+                Click below to launch Pera Wallet on your phone or web
+              </p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-black/70 border border-purple-500/30 text-left space-y-2 text-xs font-mono">
+              <div className="flex justify-between text-zinc-300">
+                <span>Action:</span>
+                <span className="text-[#00FF9D] font-bold">Sign 0.5 ALGO Micro-Payment</span>
+              </div>
+              <div className="flex justify-between text-zinc-400">
+                <span>Recipient:</span>
+                <span className="text-white truncate max-w-[180px] block">{ALGORAND_RECIPIENT}</span>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <a
+                href={`algorand://${ALGORAND_RECIPIENT}?amount=500000`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setShowPeraLaunchModal(false)}
+                className="w-full py-4 rounded-2xl bg-[#5E0ED7] hover:bg-[#6e14fa] text-white font-black text-xs uppercase tracking-widest transition-all cursor-pointer shadow-xl active:scale-95 flex items-center justify-center gap-2"
+              >
+                <span>📱 TAP TO OPEN PERA WALLET APP</span>
+              </a>
+              <button
+                onClick={() => setShowPeraLaunchModal(false)}
+                className="w-full py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-400 font-bold text-xs uppercase tracking-wider transition-all cursor-pointer"
+              >
+                Close Window
+              </button>
+            </div>
+          </div>
+        </div>
       )}
-    </div>
-  );
-}
