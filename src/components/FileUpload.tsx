@@ -86,13 +86,19 @@ export function FileUpload({ onFileSelect }: FileUploadProps) {
       setIsProcessingUpload(true);
       setSelectedFileLabel(`${owner}/${repo}`);
       
-      const zipRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/zipball`);
-      if (!zipRes.ok) {
-        throw new Error(`GitHub API returned status ${zipRes.status}. Make sure the repository is public.`);
+      const res = await fetch("/api/github-fetch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: cleanUrl })
+      });
+
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => ({}));
+        throw new Error(errJson.detail || `Failed to fetch GitHub repository (${res.status}). Ensure the repository is Public.`);
       }
 
-      const blob = await zipRes.blob();
-      const zipFile = new File([blob], `${repo}.zip`, { type: 'application/zip' });
+      const blob = await res.blob();
+      const zipFile = new File([blob], `${repo}.zip`, { type: "application/zip" });
       processFiles([zipFile]);
     } catch (err: any) {
       setIsProcessingUpload(false);
