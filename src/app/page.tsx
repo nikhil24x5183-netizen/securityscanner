@@ -46,6 +46,10 @@ export default function Home() {
   const [errorText, setErrorText] = useState<string | null>(null);
   const [walletConnected, setWalletConnected] = useState<boolean>(false);
   const [showWalletModal, setShowWalletModal] = useState<boolean>(false);
+  const [walletConnectStep, setWalletConnectStep] = useState<'select' | 'input'>('select');
+  const [selectedProvider, setSelectedProvider] = useState<string>("Pera Algo Wallet");
+  const [customWalletInput, setCustomWalletInput] = useState<string>("GPKZWR5VVQFR7NATTDNZ53ZDFAK5LSW6T5K4ZWLIWIOYUTYPXDZWAEBUFA");
+  const [walletConnecting, setWalletConnecting] = useState<boolean>(false);
 
   const [activeFileName, setActiveFileName] = useState<string>("Codebase Folder");
   const [activeFileCount, setActiveFileCount] = useState<number>(0);
@@ -450,75 +454,135 @@ export default function Home() {
               </button>
             </div>
 
-            <div className="space-y-3">
-              {/* Pera Wallet (Recommended) */}
-              <button
-                onClick={() => {
-                  setWalletConnected(true);
-                  setShowWalletModal(false);
-                }}
-                className="w-full p-4 rounded-2xl bg-purple-950/60 hover:bg-purple-900/80 border-2 border-purple-500 text-left transition-all flex items-center justify-between group cursor-pointer shadow-lg"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl">📱</span>
-                  <div>
-                    <div className="font-extrabold text-sm text-white uppercase tracking-wider">
-                      Pera Algo Wallet
-                    </div>
-                    <div className="text-[10px] text-purple-300 font-mono">
-                      Official Algorand Mobile & Web Wallet
+            {/* Step 1: Select Provider */}
+            {walletConnectStep === 'select' && (
+              <div className="space-y-3">
+                {/* Pera Wallet (Recommended) */}
+                <button
+                  onClick={() => {
+                    setSelectedProvider("Pera Algo Wallet");
+                    setWalletConnectStep('input');
+                  }}
+                  className="w-full p-4 rounded-2xl bg-purple-950/60 hover:bg-purple-900/80 border-2 border-purple-500 text-left transition-all flex items-center justify-between group cursor-pointer shadow-lg"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">📱</span>
+                    <div>
+                      <div className="font-extrabold text-sm text-white uppercase tracking-wider">
+                        Pera Algo Wallet
+                      </div>
+                      <div className="text-[10px] text-purple-300 font-mono">
+                        Official Algorand Mobile & Web Wallet
+                      </div>
                     </div>
                   </div>
-                </div>
-                <span className="px-2.5 py-1 rounded-md bg-[#00FF9D] text-black text-[9px] font-black uppercase tracking-widest">
-                  RECOMMENDED
-                </span>
-              </button>
+                  <span className="px-2.5 py-1 rounded-md bg-[#00FF9D] text-black text-[9px] font-black uppercase tracking-widest">
+                    RECOMMENDED
+                  </span>
+                </button>
 
-              {/* Defly Wallet */}
-              <button
-                onClick={() => {
-                  setWalletConnected(true);
-                  setShowWalletModal(false);
-                }}
-                className="w-full p-4 rounded-2xl bg-black hover:bg-zinc-900 border border-white/15 text-left transition-all flex items-center justify-between group cursor-pointer"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl">⚡</span>
-                  <div>
-                    <div className="font-bold text-sm text-white uppercase tracking-wider">
-                      Defly Wallet
-                    </div>
-                    <div className="text-[10px] text-zinc-400 font-mono">
-                      DeFi & Trading Algorand Wallet
+                {/* Defly Wallet */}
+                <button
+                  onClick={() => {
+                    setSelectedProvider("Defly Wallet");
+                    setWalletConnectStep('input');
+                  }}
+                  className="w-full p-4 rounded-2xl bg-black hover:bg-zinc-900 border border-white/15 text-left transition-all flex items-center justify-between group cursor-pointer"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">⚡</span>
+                    <div>
+                      <div className="font-bold text-sm text-white uppercase tracking-wider">
+                        Defly Wallet
+                      </div>
+                      <div className="text-[10px] text-zinc-400 font-mono">
+                        DeFi & Trading Algorand Wallet
+                      </div>
                     </div>
                   </div>
-                </div>
-                <span className="text-zinc-500 font-mono text-xs">Testnet</span>
-              </button>
+                  <span className="text-zinc-500 font-mono text-xs">Testnet</span>
+                </button>
 
-              {/* AlgoSigner / MyAlgo */}
-              <button
-                onClick={() => {
-                  setWalletConnected(true);
-                  setShowWalletModal(false);
-                }}
-                className="w-full p-4 rounded-2xl bg-black hover:bg-zinc-900 border border-white/15 text-left transition-all flex items-center justify-between group cursor-pointer"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl">🔑</span>
-                  <div>
-                    <div className="font-bold text-sm text-white uppercase tracking-wider">
-                      AlgoSigner / Browser Key
-                    </div>
-                    <div className="text-[10px] text-zinc-400 font-mono">
-                      Chrome Extension Wallet
+                {/* AlgoSigner / MyAlgo */}
+                <button
+                  onClick={() => {
+                    setSelectedProvider("AlgoSigner Key");
+                    setWalletConnectStep('input');
+                  }}
+                  className="w-full p-4 rounded-2xl bg-black hover:bg-zinc-900 border border-white/15 text-left transition-all flex items-center justify-between group cursor-pointer"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">🔑</span>
+                    <div>
+                      <div className="font-bold text-sm text-white uppercase tracking-wider">
+                        AlgoSigner / Browser Key
+                      </div>
+                      <div className="text-[10px] text-zinc-400 font-mono">
+                        Chrome Extension Wallet
+                      </div>
                     </div>
                   </div>
+                  <span className="text-zinc-500 font-mono text-xs">Extension</span>
+                </button>
+              </div>
+            )}
+
+            {/* Step 2: Address Input / Connect */}
+            {walletConnectStep === 'input' && (
+              <div className="space-y-4">
+                <div className="p-3 rounded-xl bg-purple-950/50 border border-purple-500/40 text-xs text-purple-200 font-mono flex items-center justify-between">
+                  <span>Selected Provider:</span>
+                  <strong className="text-[#00FF9D]">{selectedProvider}</strong>
                 </div>
-                <span className="text-zinc-500 font-mono text-xs">Extension</span>
-              </button>
-            </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-mono text-zinc-400 uppercase tracking-wider">
+                    Enter Algorand Testnet Wallet Address:
+                  </label>
+                  <input
+                    type="text"
+                    value={customWalletInput}
+                    onChange={(e) => setCustomWalletInput(e.target.value)}
+                    placeholder="GPKZWR5VVQFR7NATTDNZ53ZDFAK5LSW6T5K4ZW..."
+                    className="w-full px-4 py-3 rounded-xl bg-black border border-white/20 text-white font-mono text-xs focus:border-purple-500 focus:outline-none"
+                  />
+                  <p className="text-[10px] text-zinc-500 font-mono">
+                    Pre-filled with your Testnet Pera Wallet address.
+                  </p>
+                </div>
+
+                <div className="flex gap-2 pt-2">
+                  <button
+                    onClick={() => setWalletConnectStep('select')}
+                    className="w-1/3 py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-300 font-bold text-xs uppercase tracking-wider transition-all cursor-pointer"
+                  >
+                    Back
+                  </button>
+                  <button
+                    onClick={() => {
+                      setWalletConnecting(true);
+                      setTimeout(() => {
+                        setWalletConnecting(false);
+                        setWalletConnected(true);
+                        setShowWalletModal(false);
+                        setWalletConnectStep('select');
+                      }, 1200);
+                    }}
+                    disabled={walletConnecting}
+                    className="w-2/3 py-3 rounded-xl bg-[#5E0ED7] hover:bg-[#6e14fa] text-white font-black text-xs uppercase tracking-wider transition-all cursor-pointer shadow-lg flex items-center justify-center gap-2"
+                  >
+                    {walletConnecting ? (
+                      <>
+                        <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                        <span>CONNECTING...</span>
+                      </>
+                    ) : (
+                      <span>⚡ CONFIRM & CONNECT</span>
+                    )}
+                  </button>
+                </div>
+              </div>
+            )}
 
             <div className="text-[10px] text-center text-zinc-500 uppercase tracking-widest font-mono">
               Algorand Testnet Network • x402 Protocol Compatible
