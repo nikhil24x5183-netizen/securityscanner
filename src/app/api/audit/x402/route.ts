@@ -58,16 +58,16 @@ export async function POST(req: Request) {
           const account = algosdk.mnemonicToSecretKey(agentMnemonic.trim());
           const params = await algodClient.getTransactionParams().do();
           const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
-            from: account.addr.toString(),
-            to: ALGORAND_RECIPIENT_WALLET,
+            sender: account.addr.toString(),
+            receiver: ALGORAND_RECIPIENT_WALLET,
             amount: 500000,
             note: new Uint8Array(Buffer.from("Autonomous AI Agent x402 Micropayment")),
             suggestedParams: params
-          } as any);
+          });
 
           const signedTxn = txn.signTxn(account.sk);
           const sendResult = await algodClient.sendRawTransaction(signedTxn).do();
-          txId = (sendResult as any).txid || (sendResult as any).txId || txId;
+          txId = sendResult.txid || txId;
           await algosdk.waitForConfirmation(algodClient, txId, 4);
         }
       } catch (e) {

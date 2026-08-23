@@ -121,12 +121,12 @@ export async function sendRealAlgorandPayment(mnemonic: string): Promise<{ succe
     
     // Create 0.5 ALGO Payment Transaction (500,000 microAlgos)
     const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
-      from: account.addr.toString(),
-      to: ALGORAND_RECIPIENT,
+      sender: account.addr.toString(),
+      receiver: ALGORAND_RECIPIENT,
       amount: 500000,
       note: new Uint8Array(Buffer.from("VibeShield x402 Security Audit Micropayment")),
       suggestedParams: params
-    } as any);
+    });
 
     const signedTxn = txn.signTxn(account.sk);
     const sendResult = await algodClient.sendRawTransaction(signedTxn).do();
