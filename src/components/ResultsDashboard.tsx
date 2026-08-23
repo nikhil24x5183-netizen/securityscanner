@@ -155,13 +155,14 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
                   className="w-44 h-44 object-contain"
                 />
               </div>
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <div className="text-sm font-black text-purple-300">📱 SCAN WITH PERA WALLET</div>
                 <div>• Challenge: <strong className="text-amber-400">HTTP 402 Payment Required</strong></div>
-                <div>• Price: <strong className="text-white text-sm">0.5 ALGO ($0.001 Fee)</strong></div>
+                <div>• Price: <strong className="text-white text-sm">0.5 ALGO or 0.10 USDC</strong></div>
+                <div>• Merchant Assets: <strong className="text-[#00FF9D]">OPTED-IN (USDC ASA ID: 10458941)</strong></div>
                 <div>• Recipient Wallet: <strong className="text-white truncate block max-w-xs font-mono">{ALGORAND_RECIPIENT}</strong></div>
                 <div className="text-xs text-purple-300 font-sans leading-relaxed pt-1">
-                  Pera Wallet will automatically pre-fill the recipient & <strong>0.5 ALGO</strong> amount!
+                  Merchant is opted-in to receive <strong>ALGO & USDC</strong> on Algorand Testnet!
                 </div>
               </div>
             </div>

@@ -24,6 +24,9 @@ export async function POST(request: Request) {
           chain: "Algorand Blockchain",
           network: "Testnet",
           price: SCAN_PRICE_ALGO,
+          usdcPrice: "0.10 USDC",
+          usdcAssetId: "10458941 (ASA)",
+          merchantOptedIn: true,
           recipientWallet: ALGORAND_RECIPIENT_WALLET,
           protocol: "x402 Agentic Micropayment Protocol"
         }
@@ -34,6 +37,8 @@ export async function POST(request: Request) {
           'X-402-Payment-Required': 'true',
           'X-402-Chain': 'Algorand',
           'X-402-Price': SCAN_PRICE_ALGO,
+          'X-402-[#00FF9D]': '0.10 USDC (ASA ID: 10458941)',
+          'X-402-Merchant-Opted-In': 'true',
           'X-402-Recipient': ALGORAND_RECIPIENT_WALLET,
           'X-402-Protocol-Version': 'v1.0-agentic'
         }
