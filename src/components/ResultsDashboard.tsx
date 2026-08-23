@@ -83,6 +83,16 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
   const handleAlgorandUnlock = async () => {
     setPaymentLoading(true);
     setPaymentError(null);
+
+    // Trigger Pera Wallet deep-link protocol URI to open Pera Wallet app for signature
+    const peraDeepLink = `algorand://${ALGORAND_RECIPIENT}?amount=500000`;
+    try {
+      if (typeof window !== 'undefined') {
+        window.location.href = peraDeepLink;
+      }
+    } catch (e) {
+      console.log("Deep link redirect initiated");
+    }
     
     try {
       const liveTxData = await checkLatestAlgorandTransactionDetails();
