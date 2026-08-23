@@ -94,7 +94,8 @@ Each object in the JSON array MUST contain these exact keys:
 - issueType: string (Must be either 'Vulnerability' or 'Error')
 - severity: string (Must be one of 'Low', 'Medium', 'High', 'Critical')
 - simpleExplanation: string (A clear, plain-English explanation of what is wrong and why it matters without excessive jargon)
-- solutionCode: string (The exact corrected code snippet or file fix)
+- vulnerableCode: string (The UNSAFE vulnerable code snippet, e.g. dynamic raw innerHTML or raw SQL concatenation without sanitization)
+- solutionCode: string (The SAFE corrected code snippet, e.g. using DOMPurify.sanitize or parameterized query)
 `;
 
   if (geminiKey) {
