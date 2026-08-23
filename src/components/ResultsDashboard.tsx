@@ -669,8 +669,6 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
             </div>
           </div>
         </div>
-      )}
     </div>
   );
 }
-      )}
