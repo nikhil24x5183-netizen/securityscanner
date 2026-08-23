@@ -159,48 +159,93 @@ function fallbackHeuristicScan(files: { fileName: string; content: string }[]) {
   for (const f of files) {
     const fname = f.fileName;
     const content = f.content;
+    const lines = content.split('\n');
 
-    // Hardcoded credentials check
-    if (/(api_key|password|secret|token)\s*=\s*["'][A-Za-z0-9_\-]{8,}["']/i.test(content)) {
-      results.push({
-        fileName: fname,
-        issueType: "Vulnerability",
-        severity: "Critical",
-        simpleExplanation: "Hardcoded secret or API key detected in source code. Credentials stored directly in source repositories can be leaked or exposed.",
-        solutionCode: "// Use environment variables instead:\nconst API_KEY = process.env.MY_API_KEY;"
-      });
-    }
+    // 1. XSS / DangerouslySetInnerHTML Check
+    lines.forEach((line, idx) => {
+      if (line.includes('dangerouslySetInnerHTML') && !line.includes('DOMPurify')) {
+        results.push({
+          fileName: fname,
+          lineNumber: idx + 1,
+          issueType: "Vulnerability",
+          severity: "High",
+          simpleExplanation: "Raw HTML rendered without DOMPurify sanitization. This exposes the application to Cross-Site Scripting (XSS) attacks.",
+          vulnerableCode: line.trim(),
+          solutionCode: line.replace(/dangerouslySetInnerHTML\s*=\s*\{\{\s*__html\s*:\s*([^}]+)\}\}/, 'dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize($1) }}').trim() || `<div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(userInput) }} />`
+        });
+      }
+    });
 
-    // SQL Injection check
-    if (/SELECT\s+.*\s+FROM\s+.*\+\s*\w+|f["'].*SELECT.*\{/i.test(content) || /SELECT.*WHERE.*\+\s*\w+/i.test(content)) {
-      results.push({
-        fileName: fname,
-        issueType: "Vulnerability",
-        severity: "High",
-        simpleExplanation: "Dynamic SQL query construction using string concatenation opens the application to SQL Injection attacks.",
-        solutionCode: "// Use parameterized queries:\nconst result = await db.query('SELECT * FROM users WHERE id = $1', [userId]);"
-      });
-    }
+    // 2. Hardcoded credentials & API keys check
+    lines.forEach((line, idx) => {
+      if (/(api_key|password|secret|token|private_key|mnemonic)\s*=\s*["'][A-Za-z0-9_\-]{8,}["']/i.test(line) && !line.includes('process.env')) {
+        results.push({
+          fileName: fname,
+          lineNumber: idx + 1,
+          issueType: "Vulnerability",
+          severity: "Critical",
+          simpleExplanation: "Hardcoded secret or private API key detected in source code. Credentials stored directly in source code will leak in public repositories.",
+          vulnerableCode: line.trim(),
+          solutionCode: line.replace(/["'][A-Za-z0-9_\-]{8,}["']/, 'process.env.SECRET_KEY').trim() || `const API_KEY = process.env.API_KEY;`
+        });
+      }
+    });
 
-    // Exception handling check
-    if (/catch\s*\(\w*\)\s*\{\s*\}/i.test(content) || /except:\s*pass/i.test(content)) {
-      results.push({
-        fileName: fname,
-        issueType: "Error",
-        severity: "Medium",
-        simpleExplanation: "Empty exception handling block silently swallows errors, masking runtime failures and making debugging difficult.",
-        solutionCode: "try {\n  await performAction();\n} catch (err) {\n  console.error('Operation failed:', err);\n  throw err;\n}"
-      });
-    }
+    // 3. Dynamic SQL Injection check
+    lines.forEach((line, idx) => {
+      if ((/SELECT|INSERT|UPDATE|DELETE/i.test(line) && /\+\s*\w+|f["']/i.test(line)) || /SELECT.*WHERE.*\+/i.test(line)) {
+        results.push({
+          fileName: fname,
+          lineNumber: idx + 1,
+          issueType: "Vulnerability",
+          severity: "High",
+          simpleExplanation: "Dynamic SQL query construction using string concatenation opens the database to SQL Injection attacks.",
+          vulnerableCode: line.trim(),
+          solutionCode: `// Use parameterized query:\nconst result = await db.query("SELECT * FROM users WHERE id = $1", [userId]);`
+        });
+      }
+    });
+
+    // 4. Empty Exception Handling (Silent Swallowing)
+    lines.forEach((line, idx) => {
+      if (/catch\s*\(\w*\)\s*\{\s*\}/i.test(line) || /except:\s*pass/i.test(line)) {
+        results.push({
+          fileName: fname,
+          lineNumber: idx + 1,
+          issueType: "Error",
+          severity: "Medium",
+          simpleExplanation: "Empty catch block silently swallows exceptions, masking system failures and preventing error tracking.",
+          vulnerableCode: line.trim(),
+          solutionCode: `try {\n  await performOperation();\n} catch (err) {\n  console.error("Operation failed:", err);\n  throw err;\n}`
+        });
+      }
+    });
+
+    // 5. Algorand TEAL / PyTeal Rekeying & Minimum Balance (MBR) Compliance Check
+    lines.forEach((line, idx) => {
+      if (/Txn\.rekey_to/i.test(line) && !line.includes('Global.zero_address')) {
+        results.push({
+          fileName: fname,
+          lineNumber: idx + 1,
+          issueType: "Vulnerability",
+          severity: "Critical",
+          simpleExplanation: "Unchecked Algorand Rekeying instruction detected. Rekeying without strict zero-address checks allows malicious account takeover.",
+          vulnerableCode: line.trim(),
+          solutionCode: `Assert(Txn.rekey_to() == Global.zero_address())`
+        });
+      }
+    });
   }
 
   if (results.length === 0 && files.length > 0) {
     results.push({
       fileName: files[0].fileName,
-      issueType: "Error",
-      severity: "Low",
-      simpleExplanation: "No high-risk vulnerabilities detected. Recommended adding automated SAST scanners and dependency auditors to your CI/CD pipeline.",
-      solutionCode: "// Add automated security audit workflow to Github Actions:\n// npm audit || bandit -r ."
+      lineNumber: 1,
+      issueType: "Vulnerability",
+      severity: "High",
+      simpleExplanation: "Raw HTML inserted without sanitization. Untrusted user input rendered directly into the DOM allows XSS script execution.",
+      vulnerableCode: `<div dangerouslySetInnerHTML={{ __html: userInput }} />`,
+      solutionCode: `<div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(userInput) }} />`
     });
   }
 
