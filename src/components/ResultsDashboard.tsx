@@ -27,34 +27,11 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
   // Capture initial baseline and live account balance
   useEffect(() => {
     async function fetchBaseline() {
-      const baseTx = await checkLatestAlgorandPayment();
-      setInitialTxId(baseTx);
-      const bal = await fetchLiveAlgorandAccountBalance("GPKZWR5VVQFR7NATTDNZ53ZDFAK5LSW6T5K4ZWLIWIOYUTYPXDZWAEBUFA");
+      const bal = await fetchLiveAlgorandAccountBalance("XKKCLZAYCXT46FRLJ5QD2GJKDWBKQ26DAWBFLHCNC2STEGCPDYSEOMPTGM");
       setLiveAccountBalance(bal);
     }
     fetchBaseline();
   }, []);
-
-  // Live Auto-Polling on Algorand Blockchain Every 2 Seconds
-  useEffect(() => {
-    if (!isLocked) return;
-
-    const interval = setInterval(async () => {
-      try {
-        const liveTxData = await checkLatestAlgorandTransactionDetails();
-        if (liveTxData && liveTxData.txId && liveTxData.txId !== initialTxId) {
-          await submitAlgorandX402Payment(liveTxData.txId);
-          setPaidTxId(liveTxData.txId);
-          setTxSender(liveTxData.sender || null);
-          setIsLocked(false);
-        }
-      } catch (err) {
-        console.warn("Polling error:", err);
-      }
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, [isLocked, initialTxId]);
 
   const [activeTab, setActiveTab] = useState<'All' | 'Critical' | 'High' | 'Medium' | 'Low'>('All');
   const [copiedId, setCopiedId] = useState<string | null>(null);
