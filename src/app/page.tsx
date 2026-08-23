@@ -48,7 +48,7 @@ export default function Home() {
   const [showWalletModal, setShowWalletModal] = useState<boolean>(false);
   const [walletConnectStep, setWalletConnectStep] = useState<'select' | 'input'>('select');
   const [selectedProvider, setSelectedProvider] = useState<string>("Pera Algo Wallet");
-  const [customWalletInput, setCustomWalletInput] = useState<string>("XKKCLZAYCXT46FRLJ5QD2GJKDWBKQ26DAWBFLHCNC2STEGCPDYSEOMPTGM");
+  const [customWalletInput, setCustomWalletInput] = useState<string>("GPKZWR5VVQFR7NATTDNZ53ZDFAK5LSW6T5K4ZWLIWIOYUTYPXDZWAEBUFA");
   const [walletConnecting, setWalletConnecting] = useState<boolean>(false);
 
   const [activeFileName, setActiveFileName] = useState<string>("Codebase Folder");
@@ -461,7 +461,7 @@ export default function Home() {
                 <button
                   onClick={() => {
                     setSelectedProvider("Pera Algo Wallet");
-                    setCustomWalletInput("XKKCLZAYCXT46FRLJ5QD2GJKDWBKQ26DAWBFLHCNC2STEGCPDYSEOMPTGM");
+                    setCustomWalletInput("GPKZWR5VVQFR7NATTDNZ53ZDFAK5LSW6T5K4ZWLIWIOYUTYPXDZWAEBUFA");
                     setWalletConnectStep('input');
                   }}
                   className="w-full p-4 rounded-2xl bg-purple-950/60 hover:bg-purple-900/80 border-2 border-purple-500 text-left transition-all flex items-center justify-between group cursor-pointer shadow-lg"

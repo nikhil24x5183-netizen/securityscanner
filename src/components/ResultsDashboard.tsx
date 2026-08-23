@@ -25,7 +25,7 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
     async function fetchBaseline() {
       const baseTx = await checkLatestAlgorandPayment();
       setInitialTxId(baseTx);
-      const bal = await fetchLiveAlgorandAccountBalance("XKKCLZAYCXT46FRLJ5QD2GJKDWBKQ26DAWBFLHCNC2STEGCPDYSEOMPTGM");
+      const bal = await fetchLiveAlgorandAccountBalance("GPKZWR5VVQFR7NATTDNZ53ZDFAK5LSW6T5K4ZWLIWIOYUTYPXDZWAEBUFA");
       setLiveAccountBalance(bal);
     }
     fetchBaseline();
@@ -273,7 +273,7 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
               </div>
 
               <div className="space-y-1.5 pt-2 border-t border-zinc-800/80 text-zinc-300 text-[11px] font-mono">
-                <div>• Connected Account: <strong className="text-white truncate block">XKKCLZAYCXT46FRLJ5QD2GJKDWBKQ26DAWBFLHCNC2STEGCPDYSEOMPTGM</strong></div>
+                <div>• Connected Account: <strong className="text-white truncate block">GPKZWR5VVQFR7NATTDNZ53ZDFAK5LSW6T5K4ZWLIWIOYUTYPXDZWAEBUFA</strong></div>
                 <div>• Live Account Balance: <strong className="text-emerald-400 font-sans font-bold">{liveAccountBalance ? (selectedCurrency === 'ALGO' ? `${liveAccountBalance.algo} ALGO` : `${liveAccountBalance.usdc} USDC`) : 'Fetching balance...'}</strong></div>
                 <div>• Merchant Vault: <strong className="text-emerald-400 font-sans font-bold">🔐 VibeShield Merchant Vault (Privacy Shielded)</strong></div>
               </div>

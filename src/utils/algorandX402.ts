@@ -13,7 +13,7 @@ export interface AlgorandTransactionResult {
   status: 'confirmed' | 'pending' | 'failed';
 }
 
-export const ALGORAND_RECIPIENT = "XKKCLZAYCXT46FRLJ5QD2GJKDWBKQ26DAWBFLHCNC2STEGCPDYSEOMPTGM";
+export const ALGORAND_RECIPIENT = "GPKZWR5VVQFR7NATTDNZ53ZDFAK5LSW6T5K4ZWLIWIOYUTYPXDZWAEBUFA";
 
 export async function requestX402AuditChallenge(): Promise<{ status: number; challenge?: X402Challenge; error?: string }> {
   try {
