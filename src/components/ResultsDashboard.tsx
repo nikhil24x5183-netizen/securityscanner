@@ -629,6 +629,8 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
             </button>
           </div>
         </div>
+      )}
+
       {/* Pera Wallet Mobile App Launcher Modal */}
       {showPeraLaunchModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 animate-fade-in">
@@ -669,6 +671,7 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
             </div>
           </div>
         </div>
+      )}
     </div>
   );
 }
