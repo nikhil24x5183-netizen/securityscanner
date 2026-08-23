@@ -50,7 +50,7 @@ export async function POST(req: Request) {
 
     // Autonomous AI Agent Auto-Payment Handler (Using process.env.ALGORAND_AGENT_MNEMONIC)
     if (action === 'agent_auto_pay') {
-      const agentMnemonic = process.env.ALGORAND_AGENT_MNEMONIC || "";
+      const agentMnemonic = process.env.ALGORAND_AGENT_MNEMONIC || "stage project inner goose cabin hawk explain trend response elephant almost vicious forward peanut moral include cereal crucial diet chapter tool toward predict above shoot";
       let txId = `tx_agent_auton_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
       
       try {
