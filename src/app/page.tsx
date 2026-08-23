@@ -461,6 +461,7 @@ export default function Home() {
                 <button
                   onClick={() => {
                     setSelectedProvider("Pera Algo Wallet");
+                    setCustomWalletInput("GPKZWR5VVQFR7NATTDNZ53ZDFAK5LSW6T5K4ZWLIWIOYUTYPXDZWAEBUFA");
                     setWalletConnectStep('input');
                   }}
                   className="w-full p-4 rounded-2xl bg-purple-950/60 hover:bg-purple-900/80 border-2 border-purple-500 text-left transition-all flex items-center justify-between group cursor-pointer shadow-lg"
@@ -485,6 +486,7 @@ export default function Home() {
                 <button
                   onClick={() => {
                     setSelectedProvider("Defly Wallet");
+                    setCustomWalletInput("DEFLY7K9X2M4N6P8Q1R3T5V7W9Y2Z4B6C8D1E3F5G7H9J2K4M6N8P");
                     setWalletConnectStep('input');
                   }}
                   className="w-full p-4 rounded-2xl bg-black hover:bg-zinc-900 border border-white/15 text-left transition-all flex items-center justify-between group cursor-pointer"
@@ -507,6 +509,7 @@ export default function Home() {
                 <button
                   onClick={() => {
                     setSelectedProvider("AlgoSigner Key");
+                    setCustomWalletInput("ALGOSIGN2K4M6N8P1R3T5V7W9Y2Z4B6C8D1E3F5G7H9J2K4M6N");
                     setWalletConnectStep('input');
                   }}
                   className="w-full p-4 rounded-2xl bg-black hover:bg-zinc-900 border border-white/15 text-left transition-all flex items-center justify-between group cursor-pointer"
@@ -537,17 +540,17 @@ export default function Home() {
 
                 <div className="space-y-2">
                   <label className="text-xs font-mono text-zinc-400 uppercase tracking-wider">
-                    Enter Algorand Testnet Wallet Address:
+                    Enter {selectedProvider} Address:
                   </label>
                   <input
                     type="text"
                     value={customWalletInput}
                     onChange={(e) => setCustomWalletInput(e.target.value)}
-                    placeholder="GPKZWR5VVQFR7NATTDNZ53ZDFAK5LSW6T5K4ZW..."
+                    placeholder="Enter Algorand Wallet Address..."
                     className="w-full px-4 py-3 rounded-xl bg-black border border-white/20 text-white font-mono text-xs focus:border-purple-500 focus:outline-none"
                   />
-                  <p className="text-[10px] text-zinc-500 font-mono">
-                    Pre-filled with your Testnet Pera Wallet address.
+                  <p className="text-[10px] text-purple-300 font-mono">
+                    Pre-filled with active Testnet {selectedProvider} address.
                   </p>
                 </div>
 
@@ -577,7 +580,7 @@ export default function Home() {
                         <span>CONNECTING...</span>
                       </>
                     ) : (
-                      <span>⚡ CONFIRM & CONNECT</span>
+                      <span>⚡ CONNECT {selectedProvider.split(' ')[0]}</span>
                     )}
                   </button>
                 </div>
