@@ -87,11 +87,18 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
     setPaymentError(null);
     
     try {
-      if (mnemonicSecret && mnemonicSecret.trim().split(' ').length === 25) {
+      if (paymentMode === 'wallet') {
+        const words = mnemonicSecret.trim().split(/\s+/).filter(Boolean);
+        if (words.length !== 25) {
+          setPaymentLoading(false);
+          setPaymentError("⚠️ 25-Word Algorand Testnet Passphrase Required! Please paste your 25-word seed phrase above to execute a real on-chain payment.");
+          return;
+        }
+
         const res = await sendRealAlgorandPayment(mnemonicSecret);
         if (!res.success || !res.txId) {
           setPaymentLoading(false);
-          setPaymentError(res.error || "On-chain transaction failed.");
+          setPaymentError(res.error || "On-chain transaction failed. Please check your passphrase and balance.");
           return;
         }
         
@@ -114,23 +121,6 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
       
       await submitAlgorandX402Payment(txHash);
       setPaidTxId(txHash);
-
-      // Auto debit from connected wallet balance
-      if (liveAccountBalance) {
-        const deductAmt = selectedCurrency === 'ALGO' ? 0.5 : 0.10;
-        if (selectedCurrency === 'ALGO') {
-          setLiveAccountBalance({
-            algo: Number(Math.max(0, liveAccountBalance.algo - deductAmt).toFixed(2)),
-            usdc: liveAccountBalance.usdc
-          });
-        } else {
-          setLiveAccountBalance({
-            algo: liveAccountBalance.algo,
-            usdc: Number(Math.max(0, liveAccountBalance.usdc - deductAmt).toFixed(2))
-          });
-        }
-      }
-
       setPaymentLoading(false);
       setIsLocked(false);
       setShowSuccessGPayModal(true);
@@ -322,6 +312,13 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
             </div>
           )}
 
+          {/* Payment Error Alert Banner */}
+          {paymentError && (
+            <div className="p-3.5 rounded-2xl bg-rose-950/80 border border-rose-500/60 max-w-lg mx-auto text-xs font-bold text-rose-200 animate-bounce text-center shadow-lg">
+              {paymentError}
+            </div>
+          )}
+
           {/* Action Button for QR Mode */}
           {paymentMode === 'qr' && (
             <button
@@ -336,11 +333,11 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
           {/* Action Button for Connected Wallet Mode */}
           {paymentMode === 'wallet' && (
             <button
-              onClick={() => setShowDeductConfirmModal(true)}
+              onClick={handleAlgorandUnlock}
               disabled={paymentLoading}
               className="px-8 py-4 rounded-full bg-[#5E0ED7] hover:bg-[#6e14fa] text-white font-extrabold text-xs uppercase tracking-widest transition-all shadow-xl shadow-purple-500/20 cursor-pointer active:scale-95"
             >
-              ⚡ PAY {selectedCurrency === 'ALGO' ? '0.5 ALGO' : '0.10 USDC'} WITH CONNECTED WALLET & UNLOCK
+              {paymentLoading ? '⏳ Executing Real On-Chain Payment via KeySigner...' : `⚡ PAY ${selectedCurrency === 'ALGO' ? '0.5 ALGO' : '0.10 USDC'} WITH CONNECTED WALLET & UNLOCK`}
             </button>
           )}
         </div>
