@@ -84,9 +84,6 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
   const handleAlgorandUnlock = async () => {
     setPaymentLoading(true);
     setPaymentError(null);
-
-    // Show Pera App Launch Modal
-    setShowPeraLaunchModal(true);
     
     try {
       const liveTxData = await checkLatestAlgorandTransactionDetails();
