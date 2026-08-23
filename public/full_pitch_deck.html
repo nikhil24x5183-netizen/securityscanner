@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>VibeShield AI — Hackfinity 3.0 Pitch Document (HF3-SW-03)</title>
+  <style>
+    @page { size: A4; margin: 12mm; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; color: #111827; margin: 0; padding: 0; line-height: 1.45; font-size: 10pt; }
+    .container { max-width: 800px; margin: 0 auto; padding: 12px; }
+    .cover-page { text-align: center; padding: 30px 15px; border-bottom: 3px solid #5E0ED7; margin-bottom: 20px; }
+    .cover-title { font-size: 26pt; font-weight: 900; text-transform: uppercase; color: #111827; margin: 0; }
+    .cover-subtitle { font-size: 12pt; color: #5E0ED7; font-weight: 700; margin-top: 6px; }
+    .cover-[#00FF9D] { font-size: 10pt; color: #4B5563; margin-top: 15px; line-height: 1.5; }
+    .cover-links { margin-top: 20px; font-family: monospace; font-size: 9pt; background: #F9FAFB; padding: 12px; border-radius: 8px; border: 1px solid #E5E7EB; display: inline-block; text-align: left; }
+    .section { margin-bottom: 14px; }
+    .section-title { font-size: 11pt; font-weight: 800; text-transform: uppercase; color: #5E0ED7; border-bottom: 1.5px solid #E5E7EB; padding-bottom: 2px; margin-bottom: 6px; }
+    p { margin: 0 0 6px 0; }
+    ul { margin: 0 0 6px 0; padding-left: 18px; }
+    li { margin-bottom: 3px; }
+    .footer { font-size: 8pt; text-align: center; color: #9CA3AF; margin-top: 15px; border-top: 1px solid #E5E7EB; padding-top: 6px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- 1. COVER PAGE -->
+    <div class="cover-page">
+      <h1 class="cover-title">VibeShield AI</h1>
+      <div class="cover-subtitle">Hackfinity 3.0 Project Submission — Problem ID: HF3-SW-03</div>
+      <p class="cover-[#00FF9D]">
+        <strong>Title:</strong> Secrets-Leak Scanner with Low False-Positive Semantic Validation<br>
+        <strong>Category:</strong> Software &nbsp;|&nbsp; <strong>Theme:</strong> Machine Learning / Security
+      </p>
+      <div class="cover-links">
+        🌐 <strong>Live Application:</strong> https://hackthonn-two.vercel.app<br>
+        💻 <strong>GitHub Repository:</strong> https://github.com/nikhil24x5183-netizen/securityscanner<br>
+        ⚡ <strong>Architecture:</strong> Client-Side Zero-Knowledge SAST + x402 Micropayments
+      </div>
+    </div>
+
+    <!-- 2. PROBLEM STATEMENT -->
+    <div class="section">
+      <div class="section-title">2. Problem Statement (HF3-SW-03)</div>
+      <p>Modern software development heavily relies on external API keys, database credentials, and open-source packages. Traditional secrets scanners rely strictly on naive regex pattern matching, flooding development teams with high false-positive alerts on test placeholders, UUIDs, and base64 blobs.</p>
+      <p>This noise creates severe alert fatigue, leading developers to ignore security warnings. Furthermore, committed secrets often remain recoverable in version control history. Existing tools fail to validate key structures, guess fake line numbers, and lack actionable remediation—leaving applications exposed to severe data breaches and financial API quota abuse.</p>
+    </div>
+
+    <!-- 3. PROPOSED SOLUTION -->
+    <div class="section">
+      <div class="section-title">3. Proposed Solution</div>
+      <p><strong>VibeShield AI</strong> is a zero-knowledge, in-browser secrets and security auditing engine designed to eliminate false positives and line-guessing errors.</p>
+      <p>Running 100% locally in browser memory using <code>JSZip</code>, VibeShield scans project directories for exposed credentials (OpenAI, AWS, Stripe, GitHub PATs, DB URIs) and security flaws (SQLi, XSS, RCE). It calculates exact character offsets to pinpoint file paths and line numbers without guessing, providing dual-perspective explanations (Layman + Engineer) and one-click copy-paste safe replacement code.</p>
+    </div>
+
+    <!-- 4. TECHNICAL APPROACH -->
+    <div class="section">
+      <div class="section-title">4. Technical Approach</div>
+      <ul>
+        <li><strong>In-Browser Zero-Knowledge Sandbox:</strong> Uses HTML5 File API & <code>JSZip</code> to unpack and scan project code locally in memory without uploading private files to external servers.</li>
+        <li><strong>Character-Offset Exact Line Locator:</strong> Calculates raw string character offsets (<code>match.index</code>) to map vulnerabilities to exact file paths and line numbers without line-guessing.</li>
+        <li><strong>Semantic Secret Validation & AST Normalization:</strong> Normalizes formatting and strips whitespace to distinguish real API secret formats from placeholders and test fixtures.</li>
+        <li><strong>Strict Risk Scoring Engine:</strong> Applies a deterministic penalty formula (Start 100; Critical -20, High -12, Medium -7, Low -3) to prevent fake "100% Safe" ratings on dangerous code.</li>
+      </ul>
+    </div>
+
+    <!-- 5. FEASIBILITY & IMPLEMENTATION PLAN -->
+    <div class="section">
+      <div class="section-title">5. Feasibility & Implementation Plan</div>
+      <p><strong>Feasibility:</strong> Built with Next.js 16, React 19, TypeScript, and Vercel. 100% client-side execution results in zero backend cloud server costs and infinite user scalability.</p>
+      <p><strong>Implementation Plan:</strong></p>
+      <ul>
+        <li><strong>Phase 1 (Completed):</strong> Multi-file folder & ZIP processing, character-offset line locator, multi-category SAST engine, and interactive results dashboard.</li>
+        <li><strong>Phase 2 (Current):</strong> Vercel production deployment and x402 micropayment API integration.</li>
+        <li><strong>Phase 3 (Next):</strong> Web Worker multithreading for sub-second scanning of 1GB+ enterprise repositories.</li>
+        <li><strong>Phase 4 (Future):</strong> Real-time VS Code editor extension and automated GitHub PR security bot.</li>
+      </ul>
+    </div>
+
+    <!-- 6. IMPACT & BENEFITS -->
+    <div class="section">
+      <div class="section-title">6. Impact & Benefits</div>
+      <ul>
+        <li><strong>Reduces Alert Fatigue:</strong> Eliminates false positives so developers focus on genuine security threats.</li>
+        <li><strong>Saves Money:</strong> Prevents secret leaks on GitHub, protecting developers from thousands of dollars in unexpected cloud API bills.</li>
+        <li><strong>Protects Data:</strong> Blocks SQL Injection, XSS, and database credential leaks before code reaches production.</li>
+        <li><strong>Speeds Up Fixes:</strong> Provides developers with one-click copy-paste clean replacement code for instant remediation.</li>
+      </ul>
+    </div>
+
+    <!-- 7. BUSINESS MODEL & MARKET OPPORTUNITY -->
+    <div class="section">
+      <div class="section-title">7. Business Model & Market Opportunity</div>
+      <p><strong>Market Opportunity:</strong> The global Application Security Testing (AST) market is projected to reach $18+ Billion by 2030.</p>
+      <p><strong>Monetization Model:</strong></p>
+      <ul>
+        <li><strong>Freemium Web App:</strong> Free instant in-browser scanning for individual developers and students.</li>
+        <li><strong>x402 Micropayment API:</strong> Pay-per-scan endpoint (<code>/api/audit/x402</code>) charging micropayments ($0.10 USDC per scan) for autonomous AI agents and GitHub Actions CI/CD pipelines via HTTP 402 headers.</li>
+      </ul>
+    </div>
+
+    <!-- 8. PROTOTYPE, FUTURE ROADMAP & REFERENCES -->
+    <div class="section">
+      <div class="section-title">8. Prototype, Future Roadmap & References</div>
+      <p><strong>Working Prototype:</strong> Deployed live at <a href="https://hackthonn-two.vercel.app" target="_blank">https://hackthonn-two.vercel.app</a> with full drag-and-drop folder scanning, exact line locator, and safe code fixes.</p>
+      <p><strong>Future Roadmap:</strong> VS Code editor warnings, Web Worker background threading, and automated GitHub PR security bot.</p>
+      <p><strong>References:</strong></p>
+      <ul>
+        <li><strong>OWASP Top 10 (2021):</strong> https://owasp.org/Top10/ — Web security vulnerability standards.</li>
+        <li><strong>MITRE CWE Catalog:</strong> https://cwe.mitre.org/ — Common Weakness Enumeration dictionary.</li>
+        <li><strong>Next.js Documentation:</strong> https://nextjs.org/docs — React framework specifications.</li>
+        <li><strong>JSZip Library:</strong> https://stuk.github.io/jszip/ — In-browser archive parsing API.</li>
+      </ul>
+    </div>
+
+    <div class="footer">
+      VibeShield AI — Hackfinity 3.0 (HF3-SW-03) Pitch Document — Print to PDF via Ctrl+P or visit hackthonn-two.vercel.app/full_pitch_deck.html
+    </div>
+  </div>
+</body>
+</html>

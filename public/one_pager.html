@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>VibeShield AI — One-Pager Pitch Document</title>
+  <style>
+    @page { size: A4; margin: 12mm; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; color: #111827; margin: 0; padding: 0; line-height: 1.45; font-size: 10.5pt; }
+    .container { max-width: 800px; margin: 0 auto; padding: 10px; }
+    .header { border-bottom: 3px solid #5E0ED7; padding-bottom: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: flex-end; }
+    .title { font-size: 20pt; font-weight: 900; text-transform: uppercase; color: #111827; margin: 0; tracking: -0.5px; }
+    .subtitle { font-size: 10pt; color: #5E0ED7; font-weight: 700; margin-top: 2px; }
+    .links { font-size: 8.5pt; color: #4B5563; font-family: monospace; text-align: right; }
+    .section { margin-bottom: 10px; }
+    .section-title { font-size: 10.5pt; font-weight: 800; text-transform: uppercase; color: #5E0ED7; border-bottom: 1.5px solid #E5E7EB; padding-bottom: 2px; margin-bottom: 5px; }
+    p { margin: 0 0 5px 0; }
+    ul { margin: 0 0 6px 0; padding-left: 18px; }
+    li { margin-bottom: 2.5px; }
+    .footer { font-size: 8pt; text-align: center; color: #9CA3AF; margin-top: 10px; border-top: 1px solid #E5E7EB; padding-top: 6px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <h1 class="title">VibeShield AI</h1>
+        <div class="subtitle">Zero-Knowledge Code Security & Credential Protection Engine</div>
+      </div>
+      <div class="links">
+        <strong>Live Web App:</strong> hackthonn-two.vercel.app<br>
+        <strong>GitHub Repository:</strong> github.com/nikhil24x5183-netizen/securityscanner
+      </div>
+    </div>
+
+    <!-- 1. Problem Statement -->
+    <div class="section">
+      <div class="section-title">1. The Problem Statement We Intend to Address</div>
+      <p>When building software, developers frequently leave secret API keys, database passwords, and dangerous security bugs inside their source code. Existing security tools are slow, complex to set up, and often give misleading "100% Safe" ratings to risky code. This leaves applications exposed to leaked user data, hacked user accounts, and thousands of dollars in unexpected API billing charges.</p>
+    </div>
+
+    <!-- 2. Proposed Solution -->
+    <div class="section">
+      <div class="section-title">2. Our Proposed Solution</div>
+      <p><strong>VibeShield AI</strong> is an instant, browser-based security scanner that checks full project folders for security bugs without uploading private code to external servers. It pinpoints the exact line numbers where problems exist and gives developers clean, copy-paste code to fix them right away.</p>
+    </div>
+
+    <!-- 3. Key Features and Functionality -->
+    <div class="section">
+      <div class="section-title">3. Key Features and Functionality</div>
+      <ul>
+        <li><strong>100% Private In-Browser Scanning:</strong> Uses <code>JSZip</code> to unpack and scan code inside local browser memory. Private files never leave your computer.</li>
+        <li><strong>Exact Line Number Finder:</strong> Uses character-offset matching to locate the exact file and line number for leaked keys and bugs without line-guessing.</li>
+        <li><strong>Detects 15+ Threat Types:</strong> Flags exposed OpenAI, AWS, and Stripe keys, database passwords, SQL Injection, XSS, and dangerous <code>eval()</code> calls.</li>
+        <li><strong>Honest Risk Scoring:</strong> Uses strict penalty rules so dangerous code never receives a fake "100% Safe" rating.</li>
+        <li><strong>Instant Copy-Paste Fixes:</strong> Generates ready-to-use secure code replacement blocks for every issue found.</li>
+      </ul>
+    </div>
+
+    <!-- 4. How We Plan to Leverage the Platform -->
+    <div class="section">
+      <div class="section-title">4. How We Plan to Leverage the Platform</div>
+      <p>We leverage the platform's <strong>x402 protocol</strong> to build an automated, pay-per-scan API endpoint (<code>/api/audit/x402</code>). When AI agents or GitHub Action workflows need deep code security audits, they settle micropayments (e.g., $0.10 USDC per scan) via HTTP 402 headers—unlocking instant, verified security reports without subscriptions or manual API key setups.</p>
+    </div>
+
+    <!-- 5. Expected Impact and Value -->
+    <div class="section">
+      <div class="section-title">5. The Expected Impact and Value of the Solution</div>
+      <ul>
+        <li><strong>Saves Money:</strong> Prevents developers from leaking API keys that cause thousands of dollars in surprise cloud bills.</li>
+        <li><strong>Protects Data:</strong> Helps startups and businesses block SQL injections, XSS attacks, and database leaks before going live.</li>
+        <li><strong>Saves Time:</strong> Gives developers instant line-level fixes so they can solve security issues in seconds instead of hours.</li>
+      </ul>
+    </div>
+
+    <!-- 6. Innovative and Differentiating Elements -->
+    <div class="section">
+      <div class="section-title">6. Innovative and Differentiating Elements</div>
+      <ul>
+        <li><strong>Zero-Knowledge Privacy:</strong> Unlike traditional tools that require uploading code to cloud servers, VibeShield runs 100% locally.</li>
+        <li><strong>Sub-Second Speed:</strong> Scans entire project directories and ZIP archives in less than a second.</li>
+        <li><strong>Frictionless Experience:</strong> Requires zero CLI setup or account creation. Simply open the site and drop your folder.</li>
+      </ul>
+    </div>
+
+    <div class="footer">
+      VibeShield AI — Hackathon Project One-Pager — Print to PDF via Ctrl+P or visit hackthonn-two.vercel.app/one_pager.html
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,85 @@
+export interface X402Challenge {
+  chain: string;
+  network: string;
+  price: string;
+  recipientWallet: string;
+  protocol: string;
+}
+
+export interface AlgorandTransactionResult {
+  txId: string;
+  sender: string;
+  amount: string;
+  status: 'confirmed' | 'pending' | 'failed';
+}
+
+export const ALGORAND_RECIPIENT = "GPKZWR5VVQFR7NATTDNZ53ZDFAK5LSW6T5K4ZWLIWIOYUTYPXDZWAEBUFA";
+
+export async function requestX402AuditChallenge(): Promise<{ status: number; challenge?: X402Challenge; error?: string }> {
+  try {
+    const response = await fetch('/api/audit/x402', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'request_audit' })
+    });
+
+    if (response.status === 402) {
+      const data = await response.json();
+      return {
+        status: 402,
+        challenge: data.x402Challenge
+      };
+    }
+
+    return { status: response.status };
+  } catch (err: any) {
+    return { status: 500, error: err.message };
+  }
+}
+
+export async function submitAlgorandX402Payment(txId: string): Promise<any> {
+  const response = await fetch('/api/audit/x402', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-402-Payment': txId,
+      'X-402-Chain': 'Algorand'
+    },
+    body: JSON.stringify({ action: 'verify_and_scan' })
+  });
+
+  return await response.json();
+}
+
+export async function checkLatestAlgorandPayment(): Promise<string | null> {
+  try {
+    const res = await fetch(`https://testnet-idx.algonode.cloud/v2/accounts/${ALGORAND_RECIPIENT}/transactions?limit=3`);
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (data && data.transactions && data.transactions.length > 0) {
+      const latestTx = data.transactions[0];
+      return latestTx.id || null;
+    }
+  } catch (err) {
+    console.warn("Algonode indexer query failed:", err);
+  }
+  return null;
+}
+
+export async function checkLatestAlgorandTransactionDetails(): Promise<{ txId: string; sender?: string } | null> {
+  try {
+    const res = await fetch(`https://testnet-idx.algonode.cloud/v2/accounts/${ALGORAND_RECIPIENT}/transactions?limit=3`);
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (data && data.transactions && data.transactions.length > 0) {
+      const latestTx = data.transactions[0];
+      return {
+        txId: latestTx.id,
+        sender: latestTx.sender || latestTx['payment-transaction']?.sender
+      };
+    }
+  } catch (err) {
+    console.warn("Algonode indexer query failed:", err);
+  }
+  return null;
+}
