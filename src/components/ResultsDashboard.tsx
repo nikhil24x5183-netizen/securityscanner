@@ -664,10 +664,29 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setShowPeraLaunchModal(false)}
-                className="w-full py-4 rounded-2xl bg-[#5E0ED7] hover:bg-[#6e14fa] text-white font-black text-xs uppercase tracking-widest transition-all cursor-pointer shadow-xl active:scale-95 flex items-center justify-center gap-2"
+                className="w-full py-3.5 rounded-2xl bg-[#5E0ED7] hover:bg-[#6e14fa] text-white font-black text-xs uppercase tracking-widest transition-all cursor-pointer shadow-xl active:scale-95 flex items-center justify-center gap-2"
               >
-                <span>📱 TAP TO OPEN PERA WALLET APP</span>
+                <span>📱 OPEN PERA MOBILE APP</span>
               </a>
+
+              <a
+                href="https://web.perawallet.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 rounded-2xl bg-purple-950/80 hover:bg-purple-900/90 border border-purple-500/50 text-purple-200 font-bold text-xs uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2"
+              >
+                <span>💻 OPEN PERA WEB WALLET (DESKTOP PC)</span>
+              </a>
+
+              <button
+                onClick={() => {
+                  setShowPeraLaunchModal(false);
+                  handleAlgorandUnlock();
+                }}
+                className="w-full py-3 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-black font-black text-xs uppercase tracking-widest transition-all cursor-pointer shadow-lg active:scale-95"
+              >
+                ⚡ 1-CLICK DESKTOP TESTNET UNLOCK
+              </button>
             </div>
           </div>
         </div>
