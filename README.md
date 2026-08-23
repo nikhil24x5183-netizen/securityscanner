@@ -81,7 +81,7 @@ When an AI developer agent or CI/CD pipeline requests a security audit, VibeShie
 * 🔍 **Verified Algorand Explorer Account:**  
   👉 [https://lora.algokit.io/testnet/account/GPKZWR5VVQFR7NATTDNZ53ZDFAK5LSW6T5K4ZWLIWIOYUTYPXDZWAEBUFA](https://lora.algokit.io/testnet/account/GPKZWR5VVQFR7NATTDNZ53ZDFAK5LSW6T5K4ZWLIWIOYUTYPXDZWAEBUFA)
 * 🔗 **Verified On-Chain Transaction (Lora Explorer):**  
-  👉 [https://lora.algokit.io/testnet/transaction/tx_algo_autodebit_178747000](https://lora.algokit.io/testnet/transaction/tx_algo_autodebit_178747000)
+  👉 [https://lora.algokit.io/testnet/transaction/SRCJ2JX6XDD3W4ZU7DYWD6FQLOBETGXEJCCRX4L5K6LPNZT5QHOA](https://lora.algokit.io/testnet/transaction/SRCJ2JX6XDD3W4ZU7DYWD6FQLOBETGXEJCCRX4L5K6LPNZT5QHOA)
 
 ---
 
