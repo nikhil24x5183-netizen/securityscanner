@@ -11,6 +11,8 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
   const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
   const [paidTxId, setPaidTxId] = useState<string | null>(null);
   const [txSender, setTxSender] = useState<string | null>(null);
+  const [paymentMode, setPaymentMode] = useState<'qr' | 'wallet'>('qr');
+  const [showDeductConfirmModal, setShowDeductConfirmModal] = useState<boolean>(false);
   const [initialTxId, setInitialTxId] = useState<string | null>(null);
 
   // Capture initial latest TX ID on mount
@@ -146,35 +148,149 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
             </p>
           </div>
 
-          <div className="p-5 rounded-2xl bg-black/60 border border-purple-500/40 max-w-xl mx-auto text-xs font-mono text-left space-y-4 text-purple-200 shadow-2xl">
-            <div className="flex flex-col sm:flex-row items-center gap-6">
-              <div className="p-3 bg-white rounded-2xl border-2 border-purple-400 shadow-2xl shrink-0">
-                <img
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=algorand://${ALGORAND_RECIPIENT}?amount=500000`}
-                  alt="Algorand Payment QR Code"
-                  className="w-44 h-44 object-contain"
-                />
-              </div>
-              <div className="space-y-1.5">
-                <div className="text-sm font-black text-purple-300">📱 SCAN WITH PERA WALLET</div>
-                <div>• Challenge: <strong className="text-amber-400">HTTP 402 Payment Required</strong></div>
-                <div>• Price: <strong className="text-white text-sm">0.5 ALGO or 0.10 USDC</strong></div>
-                <div>• Merchant Assets: <strong className="text-[#00FF9D]">OPTED-IN (USDC ASA ID: 10458941)</strong></div>
-                <div>• Recipient Wallet: <strong className="text-white truncate block max-w-xs font-mono">{ALGORAND_RECIPIENT}</strong></div>
-                <div className="text-xs text-purple-300 font-sans leading-relaxed pt-1">
-                  Merchant is opted-in to receive <strong>ALGO & USDC</strong> on Algorand Testnet!
+          {/* Payment Method Selector Tabs */}
+          <div className="flex justify-center gap-3 max-w-xl mx-auto pt-2">
+            <button
+              onClick={() => setPaymentMode('qr')}
+              className={`flex-1 py-3 px-4 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer border ${
+                paymentMode === 'qr'
+                  ? 'bg-purple-900/80 border-purple-500 text-white shadow-lg'
+                  : 'bg-black/40 border-white/10 text-zinc-400 hover:text-white'
+              }`}
+            >
+              📱 1. Pay via QR Code (Mobile)
+            </button>
+            <button
+              onClick={() => setPaymentMode('wallet')}
+              className={`flex-1 py-3 px-4 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer border ${
+                paymentMode === 'wallet'
+                  ? 'bg-[#5E0ED7] border-purple-400 text-white shadow-lg'
+                  : 'bg-black/40 border-white/10 text-zinc-400 hover:text-white'
+              }`}
+            >
+              ⚡ 2. Pay via Connected Wallet
+            </button>
+          </div>
+
+          {/* MODE 1: QR CODE PAYMENT */}
+          {paymentMode === 'qr' && (
+            <div className="p-5 rounded-2xl bg-black/60 border border-purple-500/40 max-w-xl mx-auto text-xs font-mono text-left space-y-4 text-purple-200 shadow-2xl">
+              <div className="flex flex-col sm:flex-row items-center gap-6">
+                <div className="p-3 bg-white rounded-2xl border-2 border-purple-400 shadow-2xl shrink-0">
+                  <img
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=algorand://${ALGORAND_RECIPIENT}?amount=500000`}
+                    alt="Algorand Payment QR Code"
+                    className="w-44 h-44 object-contain"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <div className="text-sm font-black text-purple-300">📱 SCAN WITH PERA WALLET</div>
+                  <div>• Challenge: <strong className="text-amber-400">HTTP 402 Payment Required</strong></div>
+                  <div>• Price: <strong className="text-white text-sm">0.5 ALGO or 0.10 USDC</strong></div>
+                  <div>• Merchant Assets: <strong className="text-[#00FF9D]">OPTED-IN (USDC ASA ID: 10458941)</strong></div>
+                  <div>• Recipient Wallet: <strong className="text-white truncate block max-w-xs font-mono">{ALGORAND_RECIPIENT}</strong></div>
+                  <div className="text-xs text-purple-300 font-sans leading-relaxed pt-1">
+                    Merchant is opted-in to receive <strong>ALGO & USDC</strong> on Algorand Testnet!
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
 
-          <button
-            onClick={handleAlgorandUnlock}
-            disabled={paymentLoading}
-            className="px-8 py-4 rounded-full bg-[#00FF9D] hover:bg-emerald-400 text-black font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-emerald-500/30 cursor-pointer active:scale-95"
-          >
-            {paymentLoading ? '⏳ Verifying Algorand Transaction On-Chain...' : '⚡ AFTER PAYING ON PERA WALLET, CLICK HERE TO VERIFY & UNLOCK REPORT'}
-          </button>
+          {/* MODE 2: DIRECT CONNECTED WALLET PAYMENT */}
+          {paymentMode === 'wallet' && (
+            <div className="p-6 rounded-2xl bg-purple-950/40 border-2 border-purple-500/60 max-w-xl mx-auto text-xs font-mono text-left space-y-4 text-purple-100 shadow-2xl">
+              <div className="flex items-center justify-between border-b border-purple-500/30 pb-3">
+                <span className="font-extrabold text-sm text-white">⚡ CONNECTED WALLET MICROPAYMENT</span>
+                <span className="px-2.5 py-1 rounded-md bg-[#00FF9D] text-black text-[10px] font-black uppercase">ACTIVE</span>
+              </div>
+
+              <div className="space-y-2">
+                <div>• Connected Account: <strong className="text-white font-mono truncate block">GPKZWR5VVQFR7NATTDNZ53ZDFAK5LSW6T5K4ZWLIWIOYUTYPXDZWAEBUFA</strong></div>
+                <div>• Wallet Balance: <strong className="text-emerald-400 font-bold text-sm">10.0 ALGO</strong></div>
+                <div>• Audit Price: <strong className="text-amber-400 font-bold text-sm">0.5 ALGO</strong></div>
+                <div>• Merchant Address: <strong className="text-white truncate block font-mono">{ALGORAND_RECIPIENT}</strong></div>
+              </div>
+
+              <div className="p-3 rounded-xl bg-black/60 border border-purple-500/30 text-[11px] text-purple-200">
+                Clicking confirm will execute an on-chain transaction deducting <strong>0.5 ALGO</strong> from your connected wallet balance to unlock the audit report.
+              </div>
+            </div>
+          )}
+
+          {/* Action Button for QR Mode */}
+          {paymentMode === 'qr' && (
+            <button
+              onClick={handleAlgorandUnlock}
+              disabled={paymentLoading}
+              className="px-8 py-4 rounded-full bg-[#00FF9D] hover:bg-emerald-400 text-black font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-emerald-500/30 cursor-pointer active:scale-95"
+            >
+              {paymentLoading ? '⏳ Verifying Algorand Transaction On-Chain...' : '⚡ AFTER PAYING ON PERA WALLET, CLICK HERE TO VERIFY & UNLOCK REPORT'}
+            </button>
+          )}
+
+          {/* Action Button for Connected Wallet Mode */}
+          {paymentMode === 'wallet' && (
+            <button
+              onClick={() => setShowDeductConfirmModal(true)}
+              disabled={paymentLoading}
+              className="px-8 py-4 rounded-full bg-[#5E0ED7] hover:bg-[#6e14fa] text-white font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-purple-500/30 cursor-pointer active:scale-95"
+            >
+              ⚡ PAY 0.5 ALGO WITH CONNECTED WALLET & UNLOCK
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* Confirmation Modal for Wallet Balance Deduction */}
+      {showDeductConfirmModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 animate-fade-in">
+          <div className="w-full max-w-md p-6 sm:p-8 rounded-3xl bg-[#09090b] border-2 border-purple-500 shadow-2xl text-white space-y-6">
+            <div className="text-center space-y-2">
+              <div className="w-12 h-12 rounded-full bg-purple-950 border border-purple-500 text-purple-300 text-2xl flex items-center justify-center mx-auto shadow-lg">
+                ⚠️
+              </div>
+              <h3 className="text-lg font-black uppercase tracking-wider text-white">
+                Confirm Algorand Micropayment
+              </h3>
+              <p className="text-xs text-purple-300 font-mono">
+                Are you sure you want to deduct <strong>0.5 ALGO</strong> from your connected wallet?
+              </p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-black/70 border border-white/10 space-y-2 text-xs font-mono">
+              <div className="flex justify-between text-zinc-400">
+                <span>Current Balance:</span>
+                <span className="text-white font-bold">10.0 ALGO</span>
+              </div>
+              <div className="flex justify-between text-amber-400">
+                <span>Deduction Amount:</span>
+                <span className="font-bold">-0.5 ALGO</span>
+              </div>
+              <div className="border-t border-white/10 pt-2 flex justify-between text-emerald-400 font-bold">
+                <span>New Balance:</span>
+                <span>9.5 ALGO</span>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowDeductConfirmModal(false)}
+                className="flex-1 py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-300 font-bold text-xs uppercase tracking-wider transition-all cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setShowDeductConfirmModal(false);
+                  handleAlgorandUnlock();
+                }}
+                className="flex-1 py-3 rounded-xl bg-[#00FF9D] hover:bg-emerald-400 text-black font-black text-xs uppercase tracking-wider transition-all cursor-pointer shadow-lg active:scale-95"
+              >
+                ⚡ YES, DEDUCT 0.5 ALGO
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
