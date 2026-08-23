@@ -44,6 +44,7 @@ export default function Home() {
   const [scanState, setScanState] = useState<"idle" | "scanning" | "results">("idle");
   const [scanData, setScanData] = useState<any | null>(null);
   const [errorText, setErrorText] = useState<string | null>(null);
+  const [walletConnected, setWalletConnected] = useState<boolean>(false);
 
   const [activeFileName, setActiveFileName] = useState<string>("Codebase Folder");
   const [activeFileCount, setActiveFileCount] = useState<number>(0);
@@ -305,7 +306,29 @@ export default function Home() {
           ))}
         </nav>
 
-        <div>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => {
+              if (walletConnected) {
+                setWalletConnected(false);
+              } else {
+                setWalletConnected(true);
+              }
+            }}
+            className={`px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-widest transition-all cursor-pointer shadow-md active:scale-95 flex items-center gap-2 ${
+              walletConnected
+                ? 'bg-emerald-950 border border-emerald-500 text-emerald-300'
+                : 'bg-[#5E0ED7] hover:bg-[#6e14fa] text-white'
+            }`}
+          >
+            <span>{walletConnected ? '🟢' : '👛'}</span>
+            <span>
+              {walletConnected
+                ? `GPKZWR...BUFA (10.0 ALGO)`
+                : 'CONNECT PERA WALLET'}
+            </span>
+          </button>
+
           <button
             onClick={scrollToUpload}
             className="px-6 py-2.5 rounded-full bg-black hover:bg-[#5E0ED7] text-white font-bold text-xs uppercase tracking-widest transition-all cursor-pointer shadow-md active:scale-95"
