@@ -45,6 +45,7 @@ export default function Home() {
   const [scanData, setScanData] = useState<any | null>(null);
   const [errorText, setErrorText] = useState<string | null>(null);
   const [walletConnected, setWalletConnected] = useState<boolean>(false);
+  const [showWalletModal, setShowWalletModal] = useState<boolean>(false);
 
   const [activeFileName, setActiveFileName] = useState<string>("Codebase Folder");
   const [activeFileCount, setActiveFileCount] = useState<number>(0);
@@ -312,7 +313,7 @@ export default function Home() {
               if (walletConnected) {
                 setWalletConnected(false);
               } else {
-                setWalletConnected(true);
+                setShowWalletModal(true);
               }
             }}
             className={`px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-widest transition-all cursor-pointer shadow-md active:scale-95 flex items-center gap-2 ${
@@ -325,7 +326,7 @@ export default function Home() {
             <span>
               {walletConnected
                 ? `GPKZWR...BUFA (10.0 ALGO)`
-                : 'CONNECT PERA WALLET'}
+                : 'CONNECT WALLET'}
             </span>
           </button>
 
@@ -427,6 +428,104 @@ export default function Home() {
           </div>
         )}
       </main>
+
+      {/* Web3 Wallet Selection Modal Overlay */}
+      {showWalletModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fade-in">
+          <div className="w-full max-w-md p-6 sm:p-8 rounded-3xl bg-[#09090b] border-2 border-purple-500/50 shadow-2xl text-white space-y-6">
+            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+              <div>
+                <h3 className="text-lg font-black uppercase tracking-wider text-white">
+                  Connect Algorand Wallet
+                </h3>
+                <p className="text-xs text-purple-300 font-mono">
+                  Select your client-side wallet provider
+                </p>
+              </div>
+              <button
+                onClick={() => setShowWalletModal(false)}
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold flex items-center justify-center cursor-pointer transition-all"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-3">
+              {/* Pera Wallet (Recommended) */}
+              <button
+                onClick={() => {
+                  setWalletConnected(true);
+                  setShowWalletModal(false);
+                }}
+                className="w-full p-4 rounded-2xl bg-purple-950/60 hover:bg-purple-900/80 border-2 border-purple-500 text-left transition-all flex items-center justify-between group cursor-pointer shadow-lg"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">📱</span>
+                  <div>
+                    <div className="font-extrabold text-sm text-white uppercase tracking-wider">
+                      Pera Algo Wallet
+                    </div>
+                    <div className="text-[10px] text-purple-300 font-mono">
+                      Official Algorand Mobile & Web Wallet
+                    </div>
+                  </div>
+                </div>
+                <span className="px-2.5 py-1 rounded-md bg-[#00FF9D] text-black text-[9px] font-black uppercase tracking-widest">
+                  RECOMMENDED
+                </span>
+              </button>
+
+              {/* Defly Wallet */}
+              <button
+                onClick={() => {
+                  setWalletConnected(true);
+                  setShowWalletModal(false);
+                }}
+                className="w-full p-4 rounded-2xl bg-black hover:bg-zinc-900 border border-white/15 text-left transition-all flex items-center justify-between group cursor-pointer"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">⚡</span>
+                  <div>
+                    <div className="font-bold text-sm text-white uppercase tracking-wider">
+                      Defly Wallet
+                    </div>
+                    <div className="text-[10px] text-zinc-400 font-mono">
+                      DeFi & Trading Algorand Wallet
+                    </div>
+                  </div>
+                </div>
+                <span className="text-zinc-500 font-mono text-xs">Testnet</span>
+              </button>
+
+              {/* AlgoSigner / MyAlgo */}
+              <button
+                onClick={() => {
+                  setWalletConnected(true);
+                  setShowWalletModal(false);
+                }}
+                className="w-full p-4 rounded-2xl bg-black hover:bg-zinc-900 border border-white/15 text-left transition-all flex items-center justify-between group cursor-pointer"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">🔑</span>
+                  <div>
+                    <div className="font-bold text-sm text-white uppercase tracking-wider">
+                      AlgoSigner / Browser Key
+                    </div>
+                    <div className="text-[10px] text-zinc-400 font-mono">
+                      Chrome Extension Wallet
+                    </div>
+                  </div>
+                </div>
+                <span className="text-zinc-500 font-mono text-xs">Extension</span>
+              </button>
+            </div>
+
+            <div className="text-[10px] text-center text-zinc-500 uppercase tracking-widest font-mono">
+              Algorand Testnet Network • x402 Protocol Compatible
+            </div>
+          </div>
+        </div>
+      )}
 
       <footer className="py-4 px-8 border-t border-black/10 flex justify-between items-center text-[10px] sm:text-xs text-zinc-500 uppercase tracking-widest font-semibold shrink-0">
         <span>VibeShield AI Security Engine</span>
