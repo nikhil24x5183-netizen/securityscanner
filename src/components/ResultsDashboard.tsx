@@ -691,27 +691,12 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
                         <pre className="p-4 rounded-2xl bg-black border border-emerald-500/40 text-emerald-200 text-xs font-mono overflow-x-auto pr-32">
                           <code>{finding.solutionCode || finding.secureSnippet}</code>
                         </pre>
-                        <div className="absolute top-3 right-3 flex items-center gap-2">
-                          <button
-                            onClick={() => {
-                              setAppliedFixes((prev) => ({ ...prev, [itemKey]: true }));
-                              handleCopySnippet(finding.solutionCode || finding.secureSnippet, `sol-${itemKey}`);
-                            }}
-                            className={`px-3 py-1.5 rounded-xl text-[10px] font-mono font-bold uppercase transition-all cursor-pointer shadow-md ${
-                              appliedFixes[itemKey]
-                                ? 'bg-emerald-500 text-black border border-emerald-400 font-extrabold'
-                                : 'bg-[#5E0ED7] hover:bg-[#6e14fa] text-white border border-purple-400'
-                            }`}
-                          >
-                            {appliedFixes[itemKey] ? '🟢 AI PATCH APPLIED' : '⚡ AUTO-APPLY AI FIX'}
-                          </button>
-                          <button
-                            onClick={() => handleCopySnippet(finding.solutionCode || finding.secureSnippet, `sol-${itemKey}`)}
-                            className="px-3 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-white border border-emerald-500/40 text-[10px] font-mono font-bold uppercase transition-all cursor-pointer shadow-md"
-                          >
-                            {copiedId === `sol-${itemKey}` ? '✓ COPIED!' : '📋 COPY FIX'}
-                          </button>
-                        </div>
+                        <button
+                          onClick={() => handleCopySnippet(finding.solutionCode || finding.secureSnippet, `sol-${itemKey}`)}
+                          className="absolute top-3 right-3 px-3.5 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-white border border-emerald-500/40 text-[10px] font-mono font-bold uppercase transition-all cursor-pointer shadow-md"
+                        >
+                          {copiedId === `sol-${itemKey}` ? '✓ COPIED!' : '📋 COPY SAFE FIX'}
+                        </button>
                       </div>
                     </div>
                   )}
