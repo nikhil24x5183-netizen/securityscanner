@@ -275,29 +275,8 @@ export default function Home() {
 
   return (
     <div className="relative w-screen min-h-screen overflow-x-hidden text-black font-inter tracking-widest uppercase select-none bg-white flex flex-col justify-between">
-      {/* Top Fixed Header with Live Algorand Ticker */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-black/10 shadow-sm">
-        {/* Feature 4: Live Algorand Testnet Health Ticker Bar */}
-        <div className="w-full bg-[#0c0c0e] text-white text-[10px] font-mono py-1.5 px-6 flex items-center justify-between border-b border-zinc-800">
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5 text-emerald-400 font-bold">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              ALGORAND TESTNET ACTIVE
-            </span>
-            <span className="text-zinc-500">•</span>
-            <span className="text-zinc-300">TPS: <strong className="text-white">1,200 TPS</strong></span>
-            <span className="text-zinc-500">•</span>
-            <span className="text-zinc-300">ROUND: <strong className="text-amber-400">#4289105</strong></span>
-          </div>
-          <div className="hidden sm:flex items-center gap-4 text-zinc-400">
-            <span>ALGONODE LATENCY: <strong className="text-emerald-400">~38ms</strong></span>
-            <span className="text-zinc-500">•</span>
-            <span>ASA USDC ID: <strong className="text-purple-400">10458941</strong></span>
-          </div>
-        </div>
-
-        {/* Main Navbar */}
-        <div className="px-6 sm:px-12 py-3.5 flex justify-between items-center bg-white/95 backdrop-blur-md">
+      {/* Top Navbar */}
+      <header className="fixed top-0 left-0 right-0 z-30 px-6 sm:px-12 py-5 flex justify-between items-center bg-white/95 backdrop-blur-md border-b border-black/10 shadow-xs">
         <div 
           className="flex items-center gap-3 cursor-pointer group transition-transform duration-200 hover:scale-105 active:scale-95" 
           onClick={handleReset}
@@ -362,11 +341,10 @@ export default function Home() {
             LAUNCH AUDIT
           </button>
         </div>
-        </div>
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 pt-36 pb-12 px-6 sm:px-10 max-w-4xl lg:max-w-5xl mx-auto w-full flex flex-col items-center justify-start space-y-8">
+      <main className="flex-1 pt-28 pb-12 px-6 sm:px-10 max-w-4xl lg:max-w-5xl mx-auto w-full flex flex-col items-center justify-start space-y-8">
         {scanState === "idle" && (
           <div className="w-full text-center space-y-6">
             {/* Eyebrow Badge */}
