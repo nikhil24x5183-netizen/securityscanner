@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { submitAlgorandX402Payment, checkLatestAlgorandPayment, checkLatestAlgorandTransactionDetails, fetchLiveAlgorandAccountBalance, sendRealAlgorandPayment, ALGORAND_RECIPIENT } from '../utils/algorandX402';
+import { submitAlgorandX402Payment, checkLatestAlgorandPayment, checkLatestAlgorandTransactionDetails, fetchLiveAlgorandAccountBalance, sendRealAlgorandPayment, executeAgentAutoPayment, ALGORAND_RECIPIENT } from '../utils/algorandX402';
 
 interface ResultsDashboardProps {
   data: any;
@@ -158,6 +158,27 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
 
   const handleDownloadPDF = () => {
     window.print();
+  };
+
+  const handleAgentAutoPay = async () => {
+    setPaymentLoading(true);
+    setPaymentError(null);
+    try {
+      const res = await executeAgentAutoPayment();
+      if (res.success && res.txId) {
+        await submitAlgorandX402Payment(res.txId);
+        setPaidTxId(res.txId);
+        setPaymentLoading(false);
+        setIsLocked(false);
+        setShowSuccessGPayModal(true);
+      } else {
+        setPaymentLoading(false);
+        setPaymentError(res.error || "Autonomous AI Agent payment failed.");
+      }
+    } catch (e) {
+      setPaymentLoading(false);
+      setPaymentError("Agent execution error.");
+    }
   };
 
   return (
@@ -358,13 +379,23 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
 
           {/* Action Button for Connected Wallet Mode */}
           {paymentMode === 'wallet' && (
-            <button
-              onClick={handleAlgorandUnlock}
-              disabled={paymentLoading}
-              className="px-8 py-4 rounded-full bg-[#5E0ED7] hover:bg-[#6e14fa] text-white font-extrabold text-xs uppercase tracking-widest transition-all shadow-xl shadow-purple-500/20 cursor-pointer active:scale-95"
-            >
-              {paymentLoading ? '⏳ Executing Real On-Chain Payment via KeySigner...' : `⚡ PAY ${selectedCurrency === 'ALGO' ? '0.5 ALGO' : '0.10 USDC'} WITH CONNECTED WALLET & UNLOCK`}
-            </button>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-lg mx-auto">
+              <button
+                onClick={handleAlgorandUnlock}
+                disabled={paymentLoading}
+                className="flex-1 px-6 py-4 rounded-full bg-[#5E0ED7] hover:bg-[#6e14fa] text-white font-extrabold text-xs uppercase tracking-widest transition-all shadow-xl shadow-purple-500/20 cursor-pointer active:scale-95"
+              >
+                {paymentLoading ? '⏳ Executing Payment...' : `⚡ PAY ${selectedCurrency === 'ALGO' ? '0.5 ALGO' : '0.10 USDC'}`}
+              </button>
+
+              <button
+                onClick={handleAgentAutoPay}
+                disabled={paymentLoading}
+                className="flex-1 px-6 py-4 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs uppercase tracking-widest transition-all shadow-xl shadow-emerald-500/20 cursor-pointer active:scale-95"
+              >
+                🤖 1-CLICK AI AGENT AUTO-PAY
+              </button>
+            </div>
           )}
         </div>
       )}

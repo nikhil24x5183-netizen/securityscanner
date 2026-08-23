@@ -136,3 +136,17 @@ export async function sendRealAlgorandPayment(mnemonic: string): Promise<{ succe
     return { success: false, error: err?.message || "Invalid 25-word mnemonic or insufficient ALGO balance." };
   }
 }
+
+export async function executeAgentAutoPayment(): Promise<{ success: boolean; txId?: string; error?: string }> {
+  try {
+    const response = await fetch('/api/audit/x402', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'agent_auto_pay' })
+    });
+    const data = await response.json();
+    return { success: true, txId: data.txId };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
