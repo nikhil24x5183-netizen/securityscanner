@@ -344,23 +344,6 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
                 </div>
               </div>
 
-              {/* Real On-Chain KeySigner Input (For Desktop Real Blockchain Deduction) */}
-              <div className="space-y-1.5 pt-2 border-t border-zinc-800/80">
-                <div className="flex items-center justify-between">
-                  <label className="text-[10px] font-bold text-amber-400 uppercase tracking-wider">
-                    🔑 Real On-Chain Passphrase KeySigner:
-                  </label>
-                  <span className="text-[9px] text-zinc-400">(Real Testnet 0.5 ALGO On-Chain Debit)</span>
-                </div>
-                <input
-                  type="password"
-                  value={mnemonicSecret}
-                  onChange={(e) => setMnemonicSecret(e.target.value)}
-                  placeholder="Enter or paste your 25-word Testnet passphrase..."
-                  className="w-full p-2.5 rounded-xl bg-black/80 border border-zinc-700 text-xs font-mono text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400"
-                />
-              </div>
-
               {/* Feature 1 & 2 & 3: Opt-In Checker, Balance, Merchant Vault & Lora Explorer */}
               <div className="space-y-2 pt-2 border-t border-zinc-800/80 text-zinc-300 text-[11px] font-mono">
                 <div>• Connected Account: <strong className="text-white truncate block">XKKCLZAYCXT46FRLJ5QD2GJKDWBKQ26DAWBFLHCNC2STEGCPDYSEOMPTGM</strong></div>
@@ -392,21 +375,13 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
 
           {/* Action Button for Connected Wallet Mode */}
           {paymentMode === 'wallet' && (
-            <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-lg mx-auto">
+            <div className="flex justify-center max-w-lg mx-auto">
               <button
-                onClick={handleAlgorandUnlock}
+                onClick={() => setShowDeductConfirmModal(true)}
                 disabled={paymentLoading}
-                className="flex-1 px-6 py-4 rounded-full bg-[#5E0ED7] hover:bg-[#6e14fa] text-white font-extrabold text-xs uppercase tracking-widest transition-all shadow-xl shadow-purple-500/20 cursor-pointer active:scale-95"
+                className="w-full px-8 py-4 rounded-full bg-[#5E0ED7] hover:bg-[#6e14fa] text-white font-extrabold text-xs uppercase tracking-widest transition-all shadow-xl shadow-purple-500/20 cursor-pointer active:scale-95"
               >
-                {paymentLoading ? '⏳ Executing Payment...' : `⚡ PAY ${selectedCurrency === 'ALGO' ? '0.5 ALGO' : '0.10 USDC'}`}
-              </button>
-
-              <button
-                onClick={handleAgentAutoPay}
-                disabled={paymentLoading}
-                className="flex-1 px-6 py-4 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs uppercase tracking-widest transition-all shadow-xl shadow-emerald-500/20 cursor-pointer active:scale-95"
-              >
-                🤖 1-CLICK AI AGENT AUTO-PAY
+                {paymentLoading ? '⏳ Processing Payment...' : `⚡ PAY ${selectedCurrency === 'ALGO' ? '0.5 ALGO' : '0.10 USDC'} WITH CONNECTED WALLET`}
               </button>
             </div>
           )}
@@ -431,8 +406,12 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
 
             <div className="p-4 rounded-2xl bg-black/70 border border-white/10 space-y-2 text-xs font-mono">
               <div className="flex justify-between text-zinc-400">
+                <span>Account:</span>
+                <span className="text-white font-bold truncate max-w-[180px]">XKKCLZAYC...</span>
+              </div>
+              <div className="flex justify-between text-zinc-400">
                 <span>Current Balance:</span>
-                <span className="text-white font-bold">10.0 ALGO</span>
+                <span className="text-white font-bold">{liveAccountBalance ? `${liveAccountBalance.algo} ALGO` : '9.5 ALGO'}</span>
               </div>
               <div className="flex justify-between text-amber-400">
                 <span>Deduction Amount:</span>
@@ -440,7 +419,7 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
               </div>
               <div className="border-t border-white/10 pt-2 flex justify-between text-emerald-400 font-bold">
                 <span>New Balance:</span>
-                <span>9.5 ALGO</span>
+                <span>{liveAccountBalance ? `${Number(Math.max(0, liveAccountBalance.algo - 0.5).toFixed(2))} ALGO` : '9.0 ALGO'}</span>
               </div>
             </div>
 
@@ -458,7 +437,7 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
                 }}
                 className="flex-1 py-3 rounded-xl bg-[#00FF9D] hover:bg-emerald-400 text-black font-black text-xs uppercase tracking-wider transition-all cursor-pointer shadow-lg active:scale-95"
               >
-                ⚡ YES, DEDUCT 0.5 ALGO
+                ⚡ YES, CONFIRM & PAY 0.5 ALGO
               </button>
             </div>
           </div>
