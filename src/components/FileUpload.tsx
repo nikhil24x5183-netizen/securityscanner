@@ -107,62 +107,62 @@ export function FileUpload({ onFileSelect }: FileUploadProps) {
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 p-1.5 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10">
         <button
           onClick={() => setActiveTab('folder')}
-          className={`py-2.5 px-3 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+          className={`py-2.5 px-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 ${
             activeTab === 'folder'
               ? 'bg-[#5E0ED7] text-white shadow-lg shadow-[#5E0ED7]/40 border border-purple-400/40'
               : 'text-zinc-400 hover:text-white hover:bg-white/5'
           }`}
         >
           <span>📁</span>
-          <span>FOLDER</span>
+          <span>UPLOAD FOLDER</span>
         </button>
 
         <button
           onClick={() => setActiveTab('zip')}
-          className={`py-2.5 px-3 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+          className={`py-2.5 px-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 ${
             activeTab === 'zip'
               ? 'bg-[#5E0ED7] text-white shadow-lg shadow-[#5E0ED7]/40 border border-purple-400/40'
               : 'text-zinc-400 hover:text-white hover:bg-white/5'
           }`}
         >
           <span>📦</span>
-          <span>ZIP</span>
+          <span>ZIP ARCHIVE</span>
         </button>
 
         <button
           onClick={() => setActiveTab('files')}
-          className={`py-2.5 px-3 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+          className={`py-2.5 px-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 ${
             activeTab === 'files'
               ? 'bg-[#5E0ED7] text-white shadow-lg shadow-[#5E0ED7]/40 border border-purple-400/40'
               : 'text-zinc-400 hover:text-white hover:bg-white/5'
           }`}
         >
           <span>📄</span>
-          <span>FILES</span>
+          <span>CODE FILES</span>
         </button>
 
         <button
           onClick={() => setActiveTab('paste')}
-          className={`py-2.5 px-3 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+          className={`py-2.5 px-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 ${
             activeTab === 'paste'
               ? 'bg-[#5E0ED7] text-white shadow-lg shadow-[#5E0ED7]/40 border border-purple-400/40'
               : 'text-zinc-400 hover:text-white hover:bg-white/5'
           }`}
         >
           <span>✏️</span>
-          <span>PASTE</span>
+          <span>PASTE CODE</span>
         </button>
 
         <button
           onClick={() => setActiveTab('github')}
-          className={`py-2.5 px-3 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+          className={`py-2.5 px-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 ${
             activeTab === 'github'
               ? 'bg-[#5E0ED7] text-white shadow-lg shadow-[#5E0ED7]/40 border border-purple-400/40 font-extrabold'
               : 'text-zinc-400 hover:text-white hover:bg-white/5'
           }`}
         >
           <span>🐙</span>
-          <span>GITHUB</span>
+          <span>GITHUB REPO</span>
         </button>
       </div>
 

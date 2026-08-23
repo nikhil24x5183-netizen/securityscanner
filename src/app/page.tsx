@@ -385,6 +385,13 @@ export default function Home() {
               </button>
 
               <button
+                onClick={scrollToUpload}
+                className="px-5 py-3 rounded-full bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-[#5E0ED7] transition-all cursor-pointer shadow-md active:scale-95 flex items-center gap-2"
+              >
+                <span>🐙</span> SCAN GITHUB REPO
+              </button>
+
+              <button
                 onClick={handleCopyEmail}
                 className="px-5 py-3 rounded-full bg-[#5E0ED7] text-white text-xs font-bold uppercase tracking-widest hover:bg-[#6e14fa] transition-all cursor-pointer flex items-center gap-2 shadow-lg shadow-[#5E0ED7]/30 active:scale-95"
               >
