@@ -137,66 +137,69 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
         </div>
       </div>
 
-      {/* HTTP 402 Algorand Payment Lock Card (Shown before unlock) */}
+      {/* HTTP 402 Algorand Payment Lock Card (Clean Enterprise FinTech UI) */}
       {isLocked && (
-        <div className="p-8 rounded-[28px] bg-[#12081a] border-2 border-purple-500 shadow-2xl space-y-6 text-center animate-pulse-subtle">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-950 text-purple-300 border border-purple-500/50 text-xs font-black uppercase tracking-widest">
-            <span>⚠️ HTTP 402 PAYMENT REQUIRED</span>
-            <span>• ALGORAND BLOCKCHAIN</span>
+        <div className="p-8 sm:p-10 rounded-[32px] bg-[#0c0c0e] border border-zinc-800 shadow-2xl space-y-7 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-zinc-900 text-zinc-300 border border-zinc-700/60 text-[11px] font-bold uppercase tracking-widest">
+            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+            <span>HTTP 402 PAYMENT REQUIRED</span>
+            <span className="text-zinc-500">•</span>
+            <span className="text-emerald-400">ALGORAND TESTNET</span>
           </div>
 
-          <div className="space-y-2">
-            <h3 className="text-2xl font-black uppercase tracking-tight text-white">
-              Scan Finished! Unlock Full Security Report via x402
+          <div className="space-y-2 max-w-xl mx-auto">
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight normal-case">
+              Unlock Full Security Audit Report
             </h3>
-            <p className="text-xs text-purple-200 max-w-xl mx-auto normal-case leading-relaxed">
-              Your code has been scanned. Settle an automated <strong>0.5 ALGO</strong> micropayment on the Algorand blockchain to unlock detailed line-level vulnerability locations and clean code fixes.
+            <p className="text-xs text-zinc-400 normal-case leading-relaxed">
+              Your codebase scan is complete. Settle an automated <strong>0.5 ALGO / 0.10 USDC</strong> micropayment on the Algorand blockchain to reveal detailed line-level vulnerability locations and clean code fixes.
             </p>
           </div>
 
-          {/* Payment Method Selector Tabs */}
-          <div className="flex justify-center gap-3 max-w-xl mx-auto pt-2">
+          {/* Segmented Control Selector (Stripe Style) */}
+          <div className="flex justify-center gap-2 max-w-lg mx-auto p-1.5 rounded-2xl bg-[#15151a] border border-zinc-800/80">
             <button
               onClick={() => setPaymentMode('qr')}
-              className={`flex-1 py-3 px-4 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer border ${
+              className={`flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 paymentMode === 'qr'
-                  ? 'bg-purple-900/80 border-purple-500 text-white shadow-lg'
-                  : 'bg-black/40 border-white/10 text-zinc-400 hover:text-white'
+                  ? 'bg-zinc-800 text-white shadow-md border border-zinc-700'
+                  : 'text-zinc-400 hover:text-white'
               }`}
             >
-              📱 1. Pay via QR Code (Mobile)
+              📱 Pera Wallet QR Code
             </button>
             <button
               onClick={() => setPaymentMode('wallet')}
-              className={`flex-1 py-3 px-4 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer border ${
+              className={`flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 paymentMode === 'wallet'
-                  ? 'bg-[#5E0ED7] border-purple-400 text-white shadow-lg'
-                  : 'bg-black/40 border-white/10 text-zinc-400 hover:text-white'
+                  ? 'bg-[#5E0ED7] text-white shadow-md border border-purple-400/50'
+                  : 'text-zinc-400 hover:text-white'
               }`}
             >
-              ⚡ 2. Pay via Connected Wallet
+              ⚡ Connected Wallet
             </button>
           </div>
 
-          {/* MODE 1: QR CODE PAYMENT */}
+          {/* MODE 1: PERA WALLET QR CODE */}
           {paymentMode === 'qr' && (
-            <div className="p-5 rounded-2xl bg-black/60 border border-purple-500/40 max-w-xl mx-auto text-xs font-mono text-left space-y-4 text-purple-200 shadow-2xl">
+            <div className="p-6 rounded-2xl bg-[#141418] border border-zinc-800/80 max-w-lg mx-auto text-xs text-left space-y-4 shadow-xl">
               <div className="flex flex-col sm:flex-row items-center gap-6">
-                <div className="p-3 bg-white rounded-2xl border-2 border-purple-400 shadow-2xl shrink-0">
+                <div className="p-3 bg-white rounded-2xl border border-zinc-300 shadow-xl shrink-0">
                   <img
                     src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=algorand://${ALGORAND_RECIPIENT}?amount=500000`}
                     alt="Algorand Payment QR Code"
-                    className="w-44 h-44 object-contain"
+                    className="w-40 h-40 object-contain"
                   />
                 </div>
-                <div className="space-y-1.5">
-                  <div className="text-sm font-black text-purple-300">📱 SCAN WITH PERA WALLET</div>
-                  <div>• Challenge: <strong className="text-amber-400">HTTP 402 Payment Required</strong></div>
-                  <div>• Price: <strong className="text-white text-sm">0.5 ALGO or 0.10 USDC</strong></div>
-                  <div>• Merchant Assets: <strong className="text-[#00FF9D]">OPTED-IN (USDC ASA ID: 10458941)</strong></div>
-                  <div>• Recipient Wallet: <strong className="text-white truncate block max-w-xs font-mono">{ALGORAND_RECIPIENT}</strong></div>
-                  <div className="text-xs text-purple-300 font-sans leading-relaxed pt-1">
-                    Merchant is opted-in to receive <strong>ALGO & USDC</strong> on Algorand Testnet!
+                <div className="space-y-2 text-zinc-300 normal-case">
+                  <div className="text-xs font-bold text-white uppercase tracking-wider">📱 SCAN WITH PERA WALLET</div>
+                  <div className="text-[11px] space-y-1 font-mono text-zinc-400">
+                    <div>• Challenge: <strong className="text-amber-400 font-sans">HTTP 402 Required</strong></div>
+                    <div>• Price: <strong className="text-white font-sans">0.5 ALGO / 0.10 USDC</strong></div>
+                    <div>• Merchant Asset: <strong className="text-emerald-400 font-sans">USDC Opted-In (ASA 10458941)</strong></div>
+                  </div>
+                  <div className="text-[11px] text-zinc-400 pt-1 leading-normal">
+                    Pera Wallet will automatically pre-fill the recipient and <strong>0.5 ALGO</strong> amount.
                   </div>
                 </div>
               </div>
@@ -205,48 +208,45 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
 
           {/* MODE 2: DIRECT CONNECTED WALLET PAYMENT */}
           {paymentMode === 'wallet' && (
-            <div className="p-6 rounded-2xl bg-purple-950/40 border-2 border-purple-500/60 max-w-xl mx-auto text-xs font-mono text-left space-y-4 text-purple-100 shadow-2xl">
-              <div className="flex items-center justify-between border-b border-purple-500/30 pb-3">
-                <span className="font-extrabold text-sm text-white">⚡ CONNECTED WALLET MICROPAYMENT</span>
-                <span className="px-2.5 py-1 rounded-md bg-[#00FF9D] text-black text-[10px] font-black uppercase">ACTIVE</span>
+            <div className="p-6 rounded-2xl bg-[#141418] border border-zinc-800/80 max-w-lg mx-auto text-xs text-left space-y-4 shadow-xl">
+              <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+                <span className="font-bold text-xs text-white uppercase tracking-wider">⚡ Connected Client Wallet</span>
+                <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase border border-emerald-500/40">
+                  ACTIVE
+                </span>
               </div>
 
               {/* Currency Selector: ALGO vs USDC ASA */}
-              <div className="space-y-1.5 pt-1">
-                <label className="text-[11px] font-bold text-purple-300 uppercase tracking-wider">Select Currency Token:</label>
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Payment Currency:</label>
                 <div className="flex gap-2">
                   <button
                     onClick={() => setSelectedCurrency('ALGO')}
                     className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all cursor-pointer border ${
                       selectedCurrency === 'ALGO'
-                        ? 'bg-purple-900 border-purple-400 text-white shadow-md'
-                        : 'bg-black/50 border-white/10 text-zinc-400 hover:text-white'
+                        ? 'bg-zinc-800 border-zinc-600 text-white shadow-sm'
+                        : 'bg-zinc-900/60 border-zinc-800 text-zinc-400 hover:text-white'
                     }`}
                   >
-                    🟢 ALGO (0.5 ALGO)
+                    🟢 0.5 ALGO
                   </button>
                   <button
                     onClick={() => setSelectedCurrency('USDC')}
                     className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all cursor-pointer border ${
                       selectedCurrency === 'USDC'
-                        ? 'bg-teal-950 border-teal-400 text-[#00FF9D] shadow-md'
-                        : 'bg-black/50 border-white/10 text-zinc-400 hover:text-white'
+                        ? 'bg-emerald-950/80 border-emerald-500/60 text-emerald-300 shadow-sm'
+                        : 'bg-zinc-900/60 border-zinc-800 text-zinc-400 hover:text-white'
                     }`}
                   >
-                    💵 USDC ASA (0.10 USDC)
+                    💵 0.10 USDC (ASA)
                   </button>
                 </div>
               </div>
 
-              <div className="space-y-2 pt-2 border-t border-white/10">
-                <div>• Connected Account: <strong className="text-white font-mono truncate block">XKKCLZAYCXT46FRLJ5QD2GJKDWBKQ26DAWBFLHCNC2STEGCPDYSEOMPTGM</strong></div>
-                <div>• Live Account Balance: <strong className="text-emerald-400 font-bold text-sm">{liveAccountBalance ? (selectedCurrency === 'ALGO' ? `${liveAccountBalance.algo} ALGO` : `${liveAccountBalance.usdc} USDC`) : 'Fetching live balance...'}</strong></div>
-                <div>• Audit Price: <strong className="text-amber-400 font-bold text-sm">{selectedCurrency === 'ALGO' ? '0.5 ALGO' : '0.10 USDC (ASA ID: 10458941)'}</strong></div>
-                <div>• Merchant Receiver: <strong className="text-[#00FF9D] font-mono">🔐 VibeShield Verified Merchant Vault (Privacy Shielded)</strong></div>
-              </div>
-
-              <div className="p-3 rounded-xl bg-black/60 border border-purple-500/30 text-[11px] text-purple-200">
-                Clicking confirm will execute an on-chain transaction deducting <strong>{selectedCurrency === 'ALGO' ? '0.5 ALGO' : '0.10 USDC'}</strong> from your connected wallet balance to unlock the audit report.
+              <div className="space-y-1.5 pt-2 border-t border-zinc-800/80 text-zinc-300 text-[11px] font-mono">
+                <div>• Connected Account: <strong className="text-white truncate block">XKKCLZAYCXT46FRLJ5QD2GJKDWBKQ26DAWBFLHCNC2STEGCPDYSEOMPTGM</strong></div>
+                <div>• Live Account Balance: <strong className="text-emerald-400 font-sans font-bold">{liveAccountBalance ? (selectedCurrency === 'ALGO' ? `${liveAccountBalance.algo} ALGO` : `${liveAccountBalance.usdc} USDC`) : 'Fetching balance...'}</strong></div>
+                <div>• Merchant Vault: <strong className="text-emerald-400 font-sans font-bold">🔐 VibeShield Merchant Vault (Privacy Shielded)</strong></div>
               </div>
             </div>
           )}
@@ -256,9 +256,9 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
             <button
               onClick={handleAlgorandUnlock}
               disabled={paymentLoading}
-              className="px-8 py-4 rounded-full bg-[#00FF9D] hover:bg-emerald-400 text-black font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-emerald-500/30 cursor-pointer active:scale-95"
+              className="px-8 py-4 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs uppercase tracking-widest transition-all shadow-xl shadow-emerald-500/20 cursor-pointer active:scale-95"
             >
-              {paymentLoading ? '⏳ Verifying Algorand Transaction On-Chain...' : '⚡ AFTER PAYING ON PERA WALLET, CLICK HERE TO VERIFY & UNLOCK REPORT'}
+              {paymentLoading ? '⏳ Verifying Algorand Transaction On-Chain...' : '⚡ AFTER PAYING ON PERA WALLET, CLICK HERE TO VERIFY & UNLOCK'}
             </button>
           )}
 
@@ -267,9 +267,9 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
             <button
               onClick={() => setShowDeductConfirmModal(true)}
               disabled={paymentLoading}
-              className="px-8 py-4 rounded-full bg-[#5E0ED7] hover:bg-[#6e14fa] text-white font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-purple-500/30 cursor-pointer active:scale-95"
+              className="px-8 py-4 rounded-full bg-[#5E0ED7] hover:bg-[#6e14fa] text-white font-extrabold text-xs uppercase tracking-widest transition-all shadow-xl shadow-purple-500/20 cursor-pointer active:scale-95"
             >
-              ⚡ PAY 0.5 ALGO WITH CONNECTED WALLET & UNLOCK
+              ⚡ PAY {selectedCurrency === 'ALGO' ? '0.5 ALGO' : '0.10 USDC'} WITH CONNECTED WALLET & UNLOCK
             </button>
           )}
         </div>
