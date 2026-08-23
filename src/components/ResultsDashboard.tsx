@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { submitAlgorandX402Payment, checkLatestAlgorandPayment, checkLatestAlgorandTransactionDetails, fetchLiveAlgorandAccountBalance, ALGORAND_RECIPIENT } from '../utils/algorandX402';
+import { submitAlgorandX402Payment, checkLatestAlgorandPayment, checkLatestAlgorandTransactionDetails, fetchLiveAlgorandAccountBalance, sendRealAlgorandPayment, ALGORAND_RECIPIENT } from '../utils/algorandX402';
 
 interface ResultsDashboardProps {
   data: any;
@@ -14,6 +14,7 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
   const [txSender, setTxSender] = useState<string | null>(null);
   const [paymentMode, setPaymentMode] = useState<'qr' | 'wallet'>('qr');
   const [selectedCurrency, setSelectedCurrency] = useState<'ALGO' | 'USDC'>('ALGO');
+  const [mnemonicSecret, setMnemonicSecret] = useState<string>('');
   const [liveAccountBalance, setLiveAccountBalance] = useState<{ algo: number; usdc: number } | null>(null);
   const [showDeductConfirmModal, setShowDeductConfirmModal] = useState<boolean>(false);
   const [showSuccessGPayModal, setShowSuccessGPayModal] = useState<boolean>(false);
@@ -86,13 +87,29 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
     setPaymentError(null);
     
     try {
+      if (mnemonicSecret && mnemonicSecret.trim().split(' ').length === 25) {
+        const res = await sendRealAlgorandPayment(mnemonicSecret);
+        if (!res.success || !res.txId) {
+          setPaymentLoading(false);
+          setPaymentError(res.error || "On-chain transaction failed.");
+          return;
+        }
+        
+        await submitAlgorandX402Payment(res.txId);
+        setPaidTxId(res.txId);
+        setPaymentLoading(false);
+        setIsLocked(false);
+        setShowSuccessGPayModal(true);
+        return;
+      }
+
       const liveTxData = await checkLatestAlgorandTransactionDetails();
       const txHash = liveTxData?.txId || `tx_algo_autodebit_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
       
       if (liveTxData?.sender) {
         setTxSender(liveTxData.sender);
       } else {
-        setTxSender("XKKCLZAYCXT46FRLJ5QD2GJKDWBKQ26DAWBFLHCNC2STEGCPDYSEOMPTGM");
+        setTxSender("GPKZWR5VVQFR7NATTDNZ53ZDFAK5LSW6T5K4ZWLIWIOYUTYPXDZWAEBUFA");
       }
       
       await submitAlgorandX402Payment(txHash);
@@ -275,6 +292,23 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
                     <div className="text-[10px] text-teal-300/70 font-normal">ASA ID: 10458941</div>
                   </button>
                 </div>
+              </div>
+
+              {/* Real On-Chain KeySigner Input (For Desktop Real Blockchain Deduction) */}
+              <div className="space-y-1.5 pt-2 border-t border-zinc-800/80">
+                <div className="flex items-center justify-between">
+                  <label className="text-[10px] font-bold text-amber-400 uppercase tracking-wider">
+                    🔑 Real On-Chain Passphrase KeySigner:
+                  </label>
+                  <span className="text-[9px] text-zinc-400">(Real Testnet 0.5 ALGO On-Chain Debit)</span>
+                </div>
+                <input
+                  type="password"
+                  value={mnemonicSecret}
+                  onChange={(e) => setMnemonicSecret(e.target.value)}
+                  placeholder="Paste 25-word Testnet seed phrase to execute real on-chain debit..."
+                  className="w-full p-2.5 rounded-xl bg-black/80 border border-zinc-700 text-xs font-mono text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400"
+                />
               </div>
 
               {/* Feature 1 & 2 & 3: Opt-In Checker, Balance, Merchant Vault & Lora Explorer */}

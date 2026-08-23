@@ -105,3 +105,34 @@ export async function fetchLiveAlgorandAccountBalance(address: string): Promise<
     return { algo: 10.0, usdc: 5.0 };
   }
 }
+
+import algosdk from 'algosdk';
+
+export async function sendRealAlgorandPayment(mnemonic: string): Promise<{ success: boolean; txId?: string; error?: string }> {
+  try {
+    const cleanMnemonic = mnemonic.trim();
+    const account = algosdk.mnemonicToSecretKey(cleanMnemonic);
+    const algodClient = new algosdk.Algodv2('', 'https://testnet-api.algonode.cloud', 443);
+    const params = await algodClient.getTransactionParams().do();
+    
+    // Create 0.5 ALGO Payment Transaction (500,000 microAlgos)
+    const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+      from: account.addr.toString(),
+      to: ALGORAND_RECIPIENT,
+      amount: 500000,
+      note: new Uint8Array(Buffer.from("VibeShield x402 Security Audit Micropayment")),
+      suggestedParams: params
+    } as any);
+
+    const signedTxn = txn.signTxn(account.sk);
+    const sendResult = await algodClient.sendRawTransaction(signedTxn).do();
+    const txId = (sendResult as any).txid || (sendResult as any).txId || "";
+    
+    // Wait for on-chain confirmation
+    await algosdk.waitForConfirmation(algodClient, txId, 4);
+    return { success: true, txId };
+  } catch (err: any) {
+    console.error("Real Algorand payment failed:", err);
+    return { success: false, error: err?.message || "Invalid 25-word mnemonic or insufficient ALGO balance." };
+  }
+}
