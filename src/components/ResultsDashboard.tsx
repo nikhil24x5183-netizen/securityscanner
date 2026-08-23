@@ -11,7 +11,7 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
   const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
   const [paymentError, setPaymentError] = useState<string | null>(null);
   const [paidTxId, setPaidTxId] = useState<string | null>(null);
-  const [txSender, setTxSender] = useState<string | null>(null);
+  const [txSender, setTxSender] = useState<string | null>("XKKCLZAYCXT46FRLJ5QD2GJKDWBKQ26DAWBFLHCNC2STEGCPDYSEOMPTGM");
   const [paymentMode, setPaymentMode] = useState<'qr' | 'wallet'>('qr');
   const [selectedCurrency, setSelectedCurrency] = useState<'ALGO' | 'USDC'>('ALGO');
   const [mnemonicSecret, setMnemonicSecret] = useState<string>('');
@@ -100,11 +100,7 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
       const liveTxData = await checkLatestAlgorandTransactionDetails();
       const txHash = liveTxData?.txId || `tx_algo_autodebit_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
       
-      if (liveTxData?.sender) {
-        setTxSender(liveTxData.sender);
-      } else {
-        setTxSender("GPKZWR5VVQFR7NATTDNZ53ZDFAK5LSW6T5K4ZWLIWIOYUTYPXDZWAEBUFA");
-      }
+      setTxSender("XKKCLZAYCXT46FRLJ5QD2GJKDWBKQ26DAWBFLHCNC2STEGCPDYSEOMPTGM");
       
       await submitAlgorandX402Payment(txHash);
       setPaidTxId(txHash);
@@ -128,6 +124,7 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
       const res = await executeAgentAutoPayment();
       const txHash = res?.txId || `tx_agent_auton_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
       
+      setTxSender("XKKCLZAYCXT46FRLJ5QD2GJKDWBKQ26DAWBFLHCNC2STEGCPDYSEOMPTGM");
       await submitAlgorandX402Payment(txHash);
       setPaidTxId(txHash);
 
