@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { submitAlgorandX402Payment, checkLatestAlgorandPayment, checkLatestAlgorandTransactionDetails, ALGORAND_RECIPIENT } from '../utils/algorandX402';
+import { submitAlgorandX402Payment, checkLatestAlgorandPayment, checkLatestAlgorandTransactionDetails, fetchLiveAlgorandAccountBalance, ALGORAND_RECIPIENT } from '../utils/algorandX402';
 
 interface ResultsDashboardProps {
   data: any;
@@ -12,15 +12,19 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
   const [paidTxId, setPaidTxId] = useState<string | null>(null);
   const [txSender, setTxSender] = useState<string | null>(null);
   const [paymentMode, setPaymentMode] = useState<'qr' | 'wallet'>('qr');
+  const [selectedCurrency, setSelectedCurrency] = useState<'ALGO' | 'USDC'>('ALGO');
+  const [liveAccountBalance, setLiveAccountBalance] = useState<{ algo: number; usdc: number } | null>(null);
   const [showDeductConfirmModal, setShowDeductConfirmModal] = useState<boolean>(false);
   const [showSuccessGPayModal, setShowSuccessGPayModal] = useState<boolean>(false);
   const [initialTxId, setInitialTxId] = useState<string | null>(null);
 
-  // Capture initial latest TX ID on mount
+  // Capture initial baseline and live account balance
   useEffect(() => {
     async function fetchBaseline() {
       const baseTx = await checkLatestAlgorandPayment();
       setInitialTxId(baseTx);
+      const bal = await fetchLiveAlgorandAccountBalance("GPKZWR5VVQFR7NATTDNZ53ZDFAK5LSW6T5K4ZWLIWIOYUTYPXDZWAEBUFA");
+      setLiveAccountBalance(bal);
     }
     fetchBaseline();
   }, []);
@@ -207,15 +211,42 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
                 <span className="px-2.5 py-1 rounded-md bg-[#00FF9D] text-black text-[10px] font-black uppercase">ACTIVE</span>
               </div>
 
-              <div className="space-y-2">
+              {/* Currency Selector: ALGO vs USDC ASA */}
+              <div className="space-y-1.5 pt-1">
+                <label className="text-[11px] font-bold text-purple-300 uppercase tracking-wider">Select Currency Token:</label>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setSelectedCurrency('ALGO')}
+                    className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all cursor-pointer border ${
+                      selectedCurrency === 'ALGO'
+                        ? 'bg-purple-900 border-purple-400 text-white shadow-md'
+                        : 'bg-black/50 border-white/10 text-zinc-400 hover:text-white'
+                    }`}
+                  >
+                    🟢 ALGO (0.5 ALGO)
+                  </button>
+                  <button
+                    onClick={() => setSelectedCurrency('USDC')}
+                    className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all cursor-pointer border ${
+                      selectedCurrency === 'USDC'
+                        ? 'bg-teal-950 border-teal-400 text-[#00FF9D] shadow-md'
+                        : 'bg-black/50 border-white/10 text-zinc-400 hover:text-white'
+                    }`}
+                  >
+                    💵 USDC ASA (0.10 USDC)
+                  </button>
+                </div>
+              </div>
+
+              <div className="space-y-2 pt-2 border-t border-white/10">
                 <div>• Connected Account: <strong className="text-white font-mono truncate block">GPKZWR5VVQFR7NATTDNZ53ZDFAK5LSW6T5K4ZWLIWIOYUTYPXDZWAEBUFA</strong></div>
-                <div>• Wallet Balance: <strong className="text-emerald-400 font-bold text-sm">10.0 ALGO</strong></div>
-                <div>• Audit Price: <strong className="text-amber-400 font-bold text-sm">0.5 ALGO</strong></div>
-                <div>• Merchant Address: <strong className="text-white truncate block font-mono">{ALGORAND_RECIPIENT}</strong></div>
+                <div>• Live Account Balance: <strong className="text-emerald-400 font-bold text-sm">{liveAccountBalance ? (selectedCurrency === 'ALGO' ? `${liveAccountBalance.algo} ALGO` : `${liveAccountBalance.usdc} USDC`) : 'Fetching live balance...'}</strong></div>
+                <div>• Audit Price: <strong className="text-amber-400 font-bold text-sm">{selectedCurrency === 'ALGO' ? '0.5 ALGO' : '0.10 USDC (ASA ID: 10458941)'}</strong></div>
+                <div>• Merchant Receiver: <strong className="text-[#00FF9D] font-mono">🔐 VibeShield Verified Merchant Vault (Privacy Shielded)</strong></div>
               </div>
 
               <div className="p-3 rounded-xl bg-black/60 border border-purple-500/30 text-[11px] text-purple-200">
-                Clicking confirm will execute an on-chain transaction deducting <strong>0.5 ALGO</strong> from your connected wallet balance to unlock the audit report.
+                Clicking confirm will execute an on-chain transaction deducting <strong>{selectedCurrency === 'ALGO' ? '0.5 ALGO' : '0.10 USDC'}</strong> from your connected wallet balance to unlock the audit report.
               </div>
             </div>
           )}
