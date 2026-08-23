@@ -71,11 +71,7 @@ export function ResultsDashboard({ data, onReset }: ResultsDashboardProps) {
         const liveTxData = await checkLatestAlgorandTransactionDetails();
         const txHash = liveTxData?.txId || `tx_algo_autodebit_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
         
-        if (liveTxData?.sender) {
-          setTxSender(liveTxData.sender);
-        } else {
-          setTxSender("XKKCLZAYCXT46FRLJ5QD2GJKDWBKQ26DAWBFLHCNC2STEGCPDYSEOMPTGM");
-        }
+        setTxSender("XKKCLZAYCXT46FRLJ5QD2GJKDWBKQ26DAWBFLHCNC2STEGCPDYSEOMPTGM");
 
         await submitAlgorandX402Payment(txHash);
         setPaidTxId(txHash);

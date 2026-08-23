@@ -329,7 +329,7 @@ export default function Home() {
             <span>{walletConnected ? '🟢' : '👛'}</span>
             <span>
               {walletConnected
-                ? `GPKZWR...BUFA (10.0 ALGO)`
+                ? `XKKCLZ...PTGM (9.5 ALGO)`
                 : 'CONNECT WALLET'}
             </span>
           </button>
