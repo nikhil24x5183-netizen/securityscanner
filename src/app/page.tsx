@@ -48,7 +48,7 @@ export default function Home() {
   const [showWalletModal, setShowWalletModal] = useState<boolean>(false);
   const [walletConnectStep, setWalletConnectStep] = useState<'select' | 'input'>('select');
   const [selectedProvider, setSelectedProvider] = useState<string>("Pera Algo Wallet");
-  const [customWalletInput, setCustomWalletInput] = useState<string>("GPKZWR5VVQFR7NATTDNZ53ZDFAK5LSW6T5K4ZWLIWIOYUTYPXDZWAEBUFA");
+  const [customWalletInput, setCustomWalletInput] = useState<string>("");
   const [walletConnecting, setWalletConnecting] = useState<boolean>(false);
 
   const [activeFileName, setActiveFileName] = useState<string>("Codebase Folder");
@@ -483,7 +483,7 @@ export default function Home() {
                 <button
                   onClick={() => {
                     setSelectedProvider("Pera Algo Wallet");
-                    setCustomWalletInput("GPKZWR5VVQFR7NATTDNZ53ZDFAK5LSW6T5K4ZWLIWIOYUTYPXDZWAEBUFA");
+                    setCustomWalletInput("");
                     setWalletConnectStep('input');
                   }}
                   className="w-full p-4 rounded-2xl bg-purple-950/60 hover:bg-purple-900/80 border-2 border-purple-500 text-left transition-all flex items-center justify-between group cursor-pointer shadow-lg"
@@ -508,7 +508,7 @@ export default function Home() {
                 <button
                   onClick={() => {
                     setSelectedProvider("Defly Wallet");
-                    setCustomWalletInput("DEFLY7K9X2M4N6P8Q1R3T5V7W9Y2Z4B6C8D1E3F5G7H9J2K4M6N8P");
+                    setCustomWalletInput("");
                     setWalletConnectStep('input');
                   }}
                   className="w-full p-4 rounded-2xl bg-black hover:bg-zinc-900 border border-white/15 text-left transition-all flex items-center justify-between group cursor-pointer"
@@ -531,7 +531,7 @@ export default function Home() {
                 <button
                   onClick={() => {
                     setSelectedProvider("AlgoSigner Key");
-                    setCustomWalletInput("ALGOSIGN2K4M6N8P1R3T5V7W9Y2Z4B6C8D1E3F5G7H9J2K4M6N");
+                    setCustomWalletInput("");
                     setWalletConnectStep('input');
                   }}
                   className="w-full p-4 rounded-2xl bg-black hover:bg-zinc-900 border border-white/15 text-left transition-all flex items-center justify-between group cursor-pointer"
